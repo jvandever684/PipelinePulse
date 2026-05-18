@@ -1,0 +1,2235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>BDR 1:1 Leadership Scorecard - Stable</title>
+<style>
+:root{
+  --bg:#0b1220;
+  --panel:#111a2e;
+  --panel2:#16213a;
+  --panel3:#0f172a;
+  --border:rgba(255,255,255,.10);
+  --text:#e5e7eb;
+  --muted:#94a3b8;
+  --blue:#60a5fa;
+  --green:#34d399;
+  --amber:#fbbf24;
+  --red:#fb7185;
+  --softBlue:rgba(96,165,250,.12);
+  --softGreen:rgba(52,211,153,.12);
+  --softAmber:rgba(251,191,36,.12);
+  --softRed:rgba(251,113,133,.12);
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:linear-gradient(180deg,#0b1220 0%,#0f172a 100%);
+  color:var(--text);
+  font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+}
+.app{max-width:1380px;margin:0 auto;padding:24px}
+.header{
+  display:flex;
+  justify-content:space-between;
+  gap:18px;
+  align-items:flex-start;
+  margin-bottom:18px;
+}
+h1{margin:0;font-size:26px;letter-spacing:-.02em}
+h2{margin:0;font-size:18px}
+h3{margin:0;font-size:15px}
+p{margin:4px 0 0;color:var(--muted);font-size:14px}
+button,.btn{
+  border:1px solid var(--border);
+  background:rgba(255,255,255,.045);
+  color:var(--text);
+  border-radius:13px;
+  padding:10px 14px;
+  cursor:pointer;
+  font-size:14px;
+}
+button:hover,.btn:hover{background:rgba(255,255,255,.08)}
+.btn-primary{background:rgba(96,165,250,.16);border-color:rgba(96,165,250,.35);color:#bfdbfe}
+.btn-danger{background:rgba(251,113,133,.10);border-color:rgba(251,113,133,.25);color:#fecdd3}
+.nav{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  background:rgba(255,255,255,.035);
+  border:1px solid var(--border);
+  border-radius:18px;
+  padding:8px;
+  margin-bottom:18px;
+}
+.nav button.active{background:rgba(96,165,250,.18);border-color:rgba(96,165,250,.35);color:#bfdbfe}
+.card{
+  background:rgba(255,255,255,.035);
+  border:1px solid var(--border);
+  border-radius:24px;
+  padding:18px;
+}
+.grid{display:grid;gap:16px}
+.grid2{grid-template-columns:repeat(2,1fr)}
+.grid3{grid-template-columns:repeat(3,1fr)}
+.grid4{grid-template-columns:repeat(4,1fr)}
+.row{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.small{font-size:13px;color:var(--muted)}
+.cloud-status{font-size:12px;color:var(--muted);padding:6px 10px;border:1px solid var(--border);border-radius:999px;background:rgba(255,255,255,.035)}
+.label{display:block;color:var(--muted);font-size:12px;margin-bottom:5px}
+input,textarea,select{
+  width:100%;
+  border:1px solid var(--border);
+  border-radius:12px;
+  background:rgba(15,23,42,.86);
+  color:var(--text);
+  padding:11px;
+  font-size:15px;
+  outline:none;
+}
+input:focus,textarea:focus,select:focus{border-color:rgba(96,165,250,.65);box-shadow:0 0 0 3px rgba(59,130,246,.13)}
+textarea{min-height:86px;resize:vertical}
+.field{margin-bottom:12px}
+.status{
+  border:1px solid;
+  border-radius:999px;
+  padding:5px 10px;
+  font-size:12px;
+  white-space:nowrap;
+  font-weight:650;
+}
+.green{background:var(--softGreen);border-color:rgba(52,211,153,.30);color:#a7f3d0}
+.yellow{background:var(--softAmber);border-color:rgba(251,191,36,.30);color:#fde68a}
+.red{background:var(--softRed);border-color:rgba(251,113,133,.30);color:#fecdd3}
+.blue{background:var(--softBlue);border-color:rgba(96,165,250,.35);color:#bfdbfe}
+.kpi .label{font-size:13px}
+.kpi .value{font-size:30px;font-weight:800;margin-top:4px}
+.kpi .sub{font-size:12px;color:#64748b;margin-top:2px}
+.dashboard-reps{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.rep-card{
+  background:rgba(15,23,42,.62);
+  border:1px solid var(--border);
+  border-radius:20px;
+  padding:16px;
+  cursor:pointer;
+}
+.rep-card:hover{border-color:rgba(96,165,250,.35)}
+.rep-card-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}
+.metric-tile{background:rgba(255,255,255,.035);border:1px solid var(--border);border-radius:14px;padding:10px}
+.metric-tile b{display:block;font-size:17px;margin-top:3px}
+.layout-reps{display:grid;grid-template-columns:255px 1fr;gap:18px}
+.rep-list button{display:block;width:100%;text-align:left;margin-bottom:6px}
+.rep-list button.active{background:rgba(96,165,250,.18);border-color:rgba(96,165,250,.35);color:#bfdbfe}
+.rep-header{display:grid;grid-template-columns:1fr 1.35fr;gap:16px;align-items:end}
+.month-summary{
+  border:1px solid rgba(96,165,250,.18);
+  background:rgba(96,165,250,.075);
+  border-radius:18px;
+  padding:14px;
+}
+.month-summary b{color:#bfdbfe}
+.month-summary-line{margin-top:6px;line-height:1.7}
+.week-controls{
+  display:flex;
+  gap:10px;
+  align-items:end;
+  flex-wrap:wrap;
+}
+.week-controls .field{margin:0;min-width:180px}
+.week-card{
+  background:rgba(255,255,255,.035);
+  border:1px solid var(--border);
+  border-radius:24px;
+  overflow:hidden;
+  margin-bottom:12px;
+}
+.week-card.closed{background:rgba(255,255,255,.025)}
+.week-head{
+  padding:15px 16px;
+  cursor:pointer;
+  user-select:none;
+  transition:background .12s ease;
+}
+.week-head:hover{background:rgba(255,255,255,.035)}
+.week-title{display:flex;gap:11px;align-items:center}
+.chev{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:30px;
+  height:30px;
+  border-radius:11px;
+  background:rgba(255,255,255,.06);
+  color:#bfdbfe;
+  font-weight:900;
+}
+.week-body{
+  border-top:1px solid var(--border);
+  padding:16px;
+  display:grid;
+  grid-template-columns:1.15fr .90fr;
+  gap:16px;
+}
+.week-card.closed .week-body{display:none}
+.section{
+  background:rgba(15,23,42,.58);
+  border:1px solid var(--border);
+  border-radius:18px;
+  padding:14px;
+  margin-bottom:12px;
+}
+.section-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px}
+.view-toggle{display:none}
+.help{
+  font-size:12px;
+  line-height:1.45;
+  color:var(--muted);
+  background:rgba(96,165,250,.07);
+  border:1px solid rgba(96,165,250,.16);
+  padding:10px;
+  border-radius:14px;
+  margin-bottom:12px;
+}
+.outlook-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px}
+.outlook-card{border:1px solid var(--border);border-radius:16px;padding:12px;background:rgba(255,255,255,.035)}
+.outlook-card .big{font-size:22px;font-weight:800;margin-top:4px}
+.progress-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:12px}
+.progress-card{border:1px solid rgba(96,165,250,.18);background:rgba(96,165,250,.075);border-radius:16px;padding:12px}
+.progress-card .big{font-size:22px;font-weight:800;margin-top:4px}
+.progress-bg{height:8px;border-radius:999px;background:rgba(255,255,255,.08);overflow:hidden;margin-top:8px}
+.progress-fill{height:8px;border-radius:999px;background:rgba(96,165,250,.78)}
+.bar-bg{height:9px;border-radius:999px;background:rgba(255,255,255,.07);overflow:hidden}
+.bar{height:9px;border-radius:999px;background:rgba(96,165,250,.72)}
+.product-line{margin-bottom:11px}
+.product-line input{max-width:80px;text-align:right}
+.product-percent-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin:12px 0}
+.product-percent{border:1px solid var(--border);background:rgba(255,255,255,.035);border-radius:12px;padding:8px}
+.product-percent .pct{font-weight:800;color:#bfdbfe;margin-top:2px}
+@media(max-width:1000px){.product-percent-grid{grid-template-columns:1fr}}
+.table-wrap{overflow-x:auto;border:1px solid var(--border);border-radius:16px;margin-top:14px}
+table{width:100%;border-collapse:collapse}
+th,td{border-bottom:1px solid var(--border);padding:10px;text-align:left;font-size:13px}
+th{color:var(--muted);font-size:12px;background:rgba(255,255,255,.035)}
+.month-matrix{min-width:1080px}
+.month-matrix th,.month-matrix td{text-align:center;border:1px solid rgba(255,255,255,.08)}
+.month-matrix .row-label{text-align:left;font-weight:800;position:sticky;left:0;background:#111a2e;z-index:1}
+.month-matrix .hit{background:rgba(52,211,153,.16);color:#bbf7d0;font-weight:800}
+.month-matrix .miss{background:rgba(251,113,133,.14);color:#fecdd3;font-weight:800}
+.month-matrix .neutral{background:rgba(255,255,255,.025)}
+.month-matrix .current{box-shadow:inset 0 0 0 999px rgba(96,165,250,.06)}
+.why-toggle{margin-top:6px;font-size:11px;padding:5px 8px;border-radius:999px}
+.why-panel{display:none;margin-top:8px;text-align:left;background:rgba(96,165,250,.07);border:1px solid rgba(96,165,250,.16);border-radius:12px;padding:8px;font-size:11px;line-height:1.45;color:var(--muted)}
+.why-panel.open{display:block}
+.delta-up{color:#a7f3d0;font-weight:800}
+.delta-down{color:#fecdd3;font-weight:800}
+.delta-flat{color:var(--muted);font-weight:800}
+.status-why{margin-top:8px}
+.status-why button{font-size:11px;padding:5px 8px;border-radius:999px}
+.status-why-panel{display:none;margin-top:8px;background:rgba(96,165,250,.07);border:1px solid rgba(96,165,250,.16);border-radius:12px;padding:9px;font-size:12px;line-height:1.45;color:var(--muted)}
+.status-why-panel.open{display:block}
+.filter-pill{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--muted);padding:7px 10px;border:1px solid var(--border);border-radius:999px;background:rgba(255,255,255,.035)}
+.pm-chart{display:grid;gap:12px;margin-top:14px}
+.pm-row{display:grid;grid-template-columns:150px 1fr 80px;gap:10px;align-items:center}
+.pm-bars{display:grid;grid-template-columns:repeat(12,1fr);gap:4px;height:58px;align-items:end;border:1px solid var(--border);border-radius:12px;padding:8px;background:rgba(15,23,42,.45)}
+.pm-bar{min-height:3px;border-radius:6px 6px 2px 2px;background:rgba(96,165,250,.72)}
+.pm-bar.up{background:rgba(52,211,153,.75)}
+.pm-bar.down{background:rgba(251,113,133,.75)}
+.pm-bar.flat{background:rgba(148,163,184,.60)}
+.pm-change{font-size:12px;font-weight:800;text-align:right}
+.pm-change.up{color:#a7f3d0}.pm-change.down{color:#fecdd3}.pm-change.flat{color:var(--muted)}
+@media(max-width:800px){.pm-row{grid-template-columns:1fr}.pm-bars{height:52px}}
+.report-controls{display:flex;gap:12px;flex-wrap:wrap;align-items:end;margin-top:14px}
+.report-controls .field{min-width:220px;margin:0}
+.annual-tracker{margin-top:14px;border:1px solid rgba(96,165,250,.18);background:rgba(96,165,250,.07);border-radius:18px;padding:14px}
+.annual-tracker-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:12px}
+.heat{font-weight:800;border-radius:10px}
+.annual-metric{border:1px solid var(--border);background:rgba(15,23,42,.45);border-radius:16px;padding:12px}
+.annual-metric .big{font-size:24px;font-weight:850;margin-top:4px}
+.annual-metric .subline{font-size:12px;color:var(--muted);margin-top:2px}
+@media(max-width:1000px){.annual-tracker-grid{grid-template-columns:1fr}}
+.settings-list{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+@media(max-width:1000px){
+  .grid4,.grid3,.grid2,.dashboard-reps,.layout-reps,.rep-header,.week-body,.progress-row,.outlook-grid,.settings-list{grid-template-columns:1fr}
+  .header{flex-direction:column}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="header">
+    <div>
+      <h1>BDR 1:1 Leadership Dashboard</h1>
+      <p>Weekly coaching, monthly tracking, opportunity outlook, and product mix management.</p>
+    </div>
+    <div class="row" style="justify-content:flex-start;flex-wrap:wrap">
+      <span id="cloudStatus" class="cloud-status">Local data loaded</span>
+      <button class="btn-primary" onclick="manualCloudSave()">Save to Sheets</button>
+      <button onclick="restoreFromBackup()">Restore Backup</button>
+      <button onclick="exportData()">Export Backup</button>
+      <button onclick="document.getElementById('importFile').click()">Import Backup</button>
+      <button class="btn-danger" onclick="resetData()">Reset</button>
+      <input id="importFile" type="file" accept="application/json" style="display:none" onchange="importData(event)">
+    </div>
+  </div>
+
+  <div class="nav">
+    <button id="nav-dashboard" class="active" onclick="setTab('dashboard')">Dashboard</button>
+    <button id="nav-reps" onclick="setTab('reps')">Rep Scorecards</button>
+    <button id="nav-monthly" onclick="setTab('monthly')">Monthly Report</button>
+    <button id="nav-products" onclick="setTab('products')">Product Mix</button>
+    <button id="nav-notes" onclick="setTab('notes')">1:1 Notes</button>
+    <button id="nav-history" onclick="setTab('history')">Historical Data</button>
+    <button id="nav-settings" onclick="setTab('settings')">Settings</button>
+  </div>
+
+  <main id="root"></main>
+</div>
+
+<script>
+const STORAGE_KEY = 'bdr_1on1_leadership_app_clean_v1';
+const CLOUD_API_URL = 'https://script.google.com/macros/s/AKfycbx2Xmly3zcB2dC46f5cOR_Q0clREW5gFp2ZQUw6Dq7fM6L2PfqiD7fywNMRlxhzXOpQCg/exec';
+let cloudReady = false;
+let cloudSaveTimer = null;
+const defaultProducts = ['Dealerlogix','Text2Drive','eAdvisor','Rapid Recon','TCC','Dealer Pay'];
+const monthNames = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+let activeTab = 'dashboard';
+let activeRep = 0;
+let monthlyReportYear = null;
+let monthlyMetricFilter = 'all';
+let productMixRep = 'allreps';
+let productMixYear = null;
+let productMixMonth = null;
+let productMixCategory = 'productSet';
+let notesRepFilter = 'allreps';
+let viewMode = 'manager';
+
+function uid(){return Math.random().toString(16).slice(2)+Date.now().toString(16)}
+function num(v){const x = Number(String(v ?? '').replace(/[$,]/g,'')); return Number.isFinite(x) ? x : 0}
+function fmtMoney(v){return '$' + Math.round(num(v)).toLocaleString()}
+function weekLabel(){
+  const d = new Date();
+  const day = d.getDay();
+  const diff = d.getDate() - day + (day === 0 ? -6 : 1);
+  d.setDate(diff);
+  return d.toISOString().slice(0,10);
+}
+function monthKey(dateStr){return (dateStr || weekLabel()).slice(0,7)}
+function yearKey(dateStr){return (dateStr || weekLabel()).slice(0,4)}
+function monthName(key){return monthNames[Number(key.slice(5,7))-1] || key}
+
+function emptyWeek(products){
+  const productList = products || (typeof app !== 'undefined' && app.products ? app.products : defaultProducts);
+  return {
+    id:uid(),
+    weekOf:weekLabel(),
+    expanded:true,
+    setDemos:'',
+    demosHeld:'',
+    mrr:'',
+    calls:'',
+    emails:'',
+    oppCount:'',
+    lateStageOpps:'',
+    pipelineMrr:'',
+    weightedPipelineMrr:'',
+    productSet:Object.fromEntries(productList.map(p=>[p,''])),
+    productHeld:Object.fromEntries(productList.map(p=>[p,''])),
+    productClosed:Object.fromEntries(productList.map(p=>[p,''])),
+    productDemos:Object.fromEntries(productList.map(p=>[p,''])),
+    goingWell:'',
+    topPriorities:'',
+    biggestBlocker:'',
+    suggestions:'',
+    managerFeedback:'',
+    actionItems:''
+  }
+}
+
+function initialData(){
+  return {
+    demoTarget:'14',
+    mrrTarget:'5835',
+    weeklyCallTarget:'225',
+    weeklyEmailTarget:'100',
+    reportYears:['2025','2026'],
+    historicalData:[],
+    monthlyOverrides:{},
+    products:[...defaultProducts],
+    reps:Array.from({length:12},(_,i)=>({
+      id:uid(),
+      name:`Rep ${i+1}`,
+      email:'',
+      weeks:[emptyWeek(defaultProducts)]
+    }))
+  }
+}
+
+let app;
+try{
+  app = JSON.parse(localStorage.getItem(STORAGE_KEY)) || initialData();
+}catch(e){
+  app = initialData();
+}
+
+function persist(){
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(app));
+  scheduleCloudSave();
+}
+function saveAndRender(){persist(); render()}
+
+function setCloudStatus(message){
+  const el = document.getElementById('cloudStatus');
+  if(el) el.textContent = message;
+}
+
+function scheduleCloudSave(){
+  if(!cloudReady) return;
+  clearTimeout(cloudSaveTimer);
+  cloudSaveTimer = setTimeout(()=>saveToCloud(false), 1000);
+}
+
+async function loadFromCloud(){
+  try{
+    setCloudStatus('Loading from Google Sheets...');
+    const res = await fetch(CLOUD_API_URL + '?t=' + Date.now());
+    const text = await res.text();
+    const cloudData = text && text.trim() && text.trim() !== '{}' ? JSON.parse(text) : null;
+
+    if(cloudData && cloudData.reps){
+      app = cloudData;
+      if(!app.reportYears) app.reportYears = ['2025','2026'];
+      if(!app.historicalData) app.historicalData = [];
+      if(!app.monthlyOverrides) app.monthlyOverrides = {};
+      app.reps.forEach(r=>{ 
+        if(r.email === undefined) r.email = ''; 
+        r.weeks.forEach(ensureWeekShape); 
+      });
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(app));
+      setCloudStatus('Loaded from Google Sheets');
+      render();
+    } else {
+      setCloudStatus('No cloud data yet — using local app');
+    }
+  }catch(err){
+    console.error(err);
+    setCloudStatus('Cloud load failed — using local data');
+  }finally{
+    cloudReady = true;
+  }
+}
+
+async function saveToCloud(showAlert){
+  if(!cloudReady && !showAlert) return;
+  try{
+    setCloudStatus('Saving to Google Sheets...');
+    await fetch(CLOUD_API_URL, {
+      method:'POST',
+      mode:'no-cors',
+      headers:{'Content-Type':'text/plain;charset=utf-8'},
+      body:JSON.stringify(app)
+    });
+    setCloudStatus('Saved to Google Sheets');
+    if(showAlert) alert('Saved to Google Sheets.');
+  }catch(err){
+    console.error(err);
+    setCloudStatus('Cloud save failed — export backup recommended');
+    if(showAlert) alert('Cloud save failed. Use Export Backup as a fallback.');
+  }
+}
+
+function manualCloudSave(){
+  cloudReady = true;
+  saveToCloud(true);
+}
+
+
+async function restoreFromBackup(){
+  try{
+    setCloudStatus('Loading backup list...');
+    const res = await fetch(CLOUD_API_URL + '?action=backups&t=' + Date.now());
+    const backups = await res.json();
+
+    if(!Array.isArray(backups) || backups.length === 0){
+      alert('No backups found yet.');
+      setCloudStatus('No backups found');
+      return;
+    }
+
+    const options = backups
+      .map((b,i)=>`${i+1}. ${b.timestamp}`)
+      .join('\n');
+
+    const choice = prompt(`Choose backup to restore:\n\n${options}\n\nEnter the number:`);
+    if(!choice) return;
+
+    const index = Number(choice) - 1;
+    if(index < 0 || index >= backups.length){
+      alert('Invalid backup number.');
+      return;
+    }
+
+    if(!confirm(`Restore backup from ${backups[index].timestamp}? This will replace the current app data.`)){
+      return;
+    }
+
+    const restored = JSON.parse(backups[index].json);
+    app = restored;
+
+    if(!app.reportYears) app.reportYears = ['2025','2026'];
+    if(!app.historicalData) app.historicalData = [];
+    if(!app.monthlyOverrides) app.monthlyOverrides = {};
+    app.reps.forEach(r=>{ 
+      if(r.email === undefined) r.email = ''; 
+      r.weeks.forEach(ensureWeekShape); 
+    });
+
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(app));
+    cloudReady = true;
+    await saveToCloud(false);
+
+    setCloudStatus('Backup restored and saved');
+    alert('Backup restored.');
+    render();
+  }catch(err){
+    console.error(err);
+    setCloudStatus('Restore failed');
+    alert('Restore failed. Make sure your Apps Script has the backup list code.');
+  }
+}
+
+
+function ensureWeekShape(w){
+  if(!w.productDemos) w.productDemos = {};
+  if(!w.productSet) w.productSet = {};
+  if(!w.productHeld) w.productHeld = {};
+  if(!w.productClosed) w.productClosed = {};
+  app.products.forEach(p=>{
+    if(w.productDemos[p] === undefined) w.productDemos[p] = '';
+    if(w.productSet[p] === undefined) w.productSet[p] = w.productDemos[p] || '';
+    if(w.productHeld[p] === undefined) w.productHeld[p] = '';
+    if(w.productClosed[p] === undefined) w.productClosed[p] = '';
+  });
+  ['setDemos','demosHeld','mrr','calls','emails','oppCount','lateStageOpps','pipelineMrr','weightedPipelineMrr','goingWell','topPriorities','biggestBlocker','suggestions','managerFeedback','actionItems','disciplinaryConcern','disciplinaryFeedback','disciplinaryNextSteps'].forEach(k=>{
+    if(w[k] === undefined) w[k] = '';
+  });
+  if(w.expanded === undefined) w.expanded = true;
+}
+if(!app.reportYears) app.reportYears = ['2025','2026'];
+if(!app.historicalData) app.historicalData = [];
+// Ensure all reps have email field
+app.reps.forEach(r=>{ if(r.email === undefined) r.email = ''; });
+if(!app.monthlyOverrides) app.monthlyOverrides = {};
+app.reps.forEach(r=>r.weeks.forEach(ensureWeekShape));
+persist();
+
+function setTab(tab){
+  activeTab = tab;
+  document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));
+  document.getElementById('nav-'+tab)?.classList.add('active');
+  render();
+}
+
+function monthlyTotals(rep, dateStr){
+  const key = monthKey(dateStr);
+  const weeks = rep.weeks.filter(w=>monthKey(w.weekOf) === key);
+  return {
+    month:key,
+    setDemos:weeks.reduce((a,w)=>a+num(w.setDemos),0),
+    heldDemos:weeks.reduce((a,w)=>a+num(w.demosHeld),0),
+    mrr:weeks.reduce((a,w)=>a+num(w.mrr),0),
+    calls:weeks.reduce((a,w)=>a+num(w.calls),0),
+    emails:weeks.reduce((a,w)=>a+num(w.emails),0),
+    weeks:weeks.length
+  }
+}
+
+function monthsForYear(rep, year){
+  const map = {};
+  monthNames.forEach((_,i)=>{
+    const key = year + '-' + String(i+1).padStart(2,'0');
+    map[key] = {month:key,setDemos:0,heldDemos:0,mrr:0,calls:0,emails:0,weeks:0};
+  });
+  rep.weeks.filter(w=>yearKey(w.weekOf) === year).forEach(w=>{
+    const key = monthKey(w.weekOf);
+    if(!map[key]) map[key] = {month:key,setDemos:0,heldDemos:0,mrr:0,calls:0,emails:0,weeks:0};
+    map[key].setDemos += num(w.setDemos);
+    map[key].heldDemos += num(w.demosHeld);
+    map[key].mrr += num(w.mrr);
+    map[key].calls += num(w.calls);
+    map[key].emails += num(w.emails);
+    map[key].weeks += 1;
+  });
+  return monthNames.map((_,i)=>map[year + '-' + String(i+1).padStart(2,'0')]);
+}
+
+function scoreCoverage(value,target){
+  const t = num(target);
+  if(!t) return 0;
+  const pct = num(value)/t;
+  if(pct>=1) return 1;
+  if(pct>=.8) return .8;
+  if(pct>=.6) return .6;
+  if(pct>=.4) return .4;
+  if(pct>=.2) return .2;
+  return 0;
+}
+
+function productHealth(w){
+  const vals = app.products.map(p=>num((w.productSet || w.productDemos || {})[p]));
+  const total = vals.reduce((a,b)=>a+b,0);
+  const count = vals.filter(v=>v>0).length;
+  const concentration = total ? Math.max(...vals)/total : 0;
+  if(total===0) return {label:'No Mix Entered',cls:'yellow',count,total,concentration};
+  if(count>=4 && concentration<=.45) return {label:'Healthy Variety',cls:'green',count,total,concentration};
+  if(count>=3 && concentration<=.60) return {label:'Moderate Variety',cls:'yellow',count,total,concentration};
+  return {label:'Concentration Risk',cls:'red',count,total,concentration};
+}
+
+function opportunityOutlook(rep,w){
+  const mt = monthlyTotals(rep,w.weekOf);
+  const gap = Math.max(0, num(app.mrrTarget)-mt.mrr);
+  const pipeline = num(w.pipelineMrr);
+  const coverage = gap ? pipeline/gap : 99;
+  if(gap===0) return {label:'MRR Hit',cls:'green',gap,pipeline,coverage};
+  if(coverage>=2) return {label:'On Track',cls:'green',gap,pipeline,coverage};
+  if(coverage>=1) return {label:'Thin',cls:'yellow',gap,pipeline,coverage};
+  return {label:'At Risk',cls:'red',gap,pipeline,coverage};
+}
+
+function repStatus(rep){
+  const week = rep.weeks[rep.weeks.length-1];
+  const mt = monthlyTotals(rep, week.weekOf);
+  const opp = opportunityOutlook(rep,week);
+  const hitHeld = mt.heldDemos >= num(app.demoTarget);
+  const hitMrr = mt.mrr >= num(app.mrrTarget);
+  if(hitHeld && hitMrr) return {label:'Performing',cls:'green'};
+  if(hitHeld || hitMrr || opp.label==='On Track' || opp.label==='MRR Hit') return {label:'On Track',cls:'green'};
+  const activityOk = scoreCoverage(week.calls,app.weeklyCallTarget)>=.8 || scoreCoverage(week.emails,app.weeklyEmailTarget)>=.8;
+  if(activityOk || opp.label==='Thin') return {label:'On Track',cls:'green'};
+  return {label:'At Risk',cls:'red'};
+}
+
+function atRiskReasons(rep, week){
+  const mt = monthlyTotals(rep, week.weekOf);
+  const opp = opportunityOutlook(rep, week);
+  const reasons = [];
+  const heldPct = mt.heldDemos / Math.max(1, num(app.demoTarget));
+  const mrrPct = mt.mrr / Math.max(1, num(app.mrrTarget));
+  if(heldPct < 0.5) reasons.push('Held demos at ' + mt.heldDemos + '/' + app.demoTarget + ' (' + Math.round(heldPct*100) + '%)');
+  if(mrrPct < 0.5) reasons.push('MRR at ' + fmtMoney(mt.mrr) + '/' + fmtMoney(app.mrrTarget) + ' (' + Math.round(mrrPct*100) + '%)');
+  if(opp.label === 'At Risk') reasons.push('Pipeline thin — ' + fmtMoney(opp.pipeline) + ' vs ' + fmtMoney(opp.gap) + ' gap');
+  if(scoreCoverage(week.calls, app.weeklyCallTarget) < 0.5) reasons.push('Low call activity (' + num(week.calls) + ' calls)');
+  if(scoreCoverage(week.emails, app.weeklyEmailTarget) < 0.5) reasons.push('Low email activity (' + num(week.emails) + ' emails)');
+  return reasons;
+}
+
+function recommendedFocus(rep,w){
+  const mt = monthlyTotals(rep,w.weekOf);
+  if(mt.heldDemos < num(app.demoTarget) && mt.mrr < num(app.mrrTarget)) return 'Results / MRR';
+  const opp = opportunityOutlook(rep,w);
+  if(opp.cls !== 'green') return 'Pipeline Coverage';
+  if(num(w.calls) < num(app.weeklyCallTarget) && num(w.emails) < num(app.weeklyEmailTarget)) return 'Activity';
+  const ph = productHealth(w);
+  if(ph.cls !== 'green') return 'Product Mix';
+  return 'Coaching / Next Step';
+}
+
+function updateWeek(repIndex, weekId, key, value){
+  const week = app.reps[repIndex].weeks.find(w=>w.id === weekId);
+  if(!week) return;
+  week[key] = value;
+  persist();
+  refreshLiveCalculations(repIndex, weekId);
+}
+
+function updateProduct(repIndex, weekId, category, product, value){
+  const week = app.reps[repIndex].weeks.find(w=>w.id === weekId);
+  if(!week) return;
+  if(!week[category]) week[category] = {};
+  week[category][product] = value;
+  if(category === 'productSet') week.productDemos[product] = value;
+  persist();
+  updateProductMixLive(repIndex, weekId);
+}
+
+
+function updateProductMixLive(repIndex, weekId){
+  const rep = app.reps[repIndex];
+  if(!rep) return;
+  const week = rep.weeks.find(w=>w.id === weekId);
+  if(!week) return;
+
+  ['productSet','productHeld','productClosed'].forEach(category=>{
+    const source = week[category] || {};
+    const vals = app.products.map(p=>num(source[p]));
+    const total = vals.reduce((a,b)=>a+b,0);
+
+    app.products.forEach(p=>{
+      const pct = total ? Math.round((num(source[p]) / total) * 100) : 0;
+      const pctEl = document.querySelector(`[data-week-id="${weekId}"] [data-product-pct="${category}-${cssEscapeValue(p)}"]`);
+      const barEl = document.querySelector(`[data-week-id="${weekId}"] [data-product-bar="${category}-${cssEscapeValue(p)}"]`);
+      if(pctEl) pctEl.textContent = pct + '%';
+      if(barEl) barEl.style.width = Math.min(100,pct) + '%';
+    });
+  });
+
+  const ph = productHealth(week);
+  const countEl = document.querySelector(`[data-week-id="${weekId}"] [data-product-count]`);
+  const concentrationEl = document.querySelector(`[data-week-id="${weekId}"] [data-product-concentration]`);
+  if(countEl) countEl.textContent = ph.count;
+  if(concentrationEl) concentrationEl.textContent = Math.round(ph.concentration*100) + '%';
+}
+
+function cssEscapeValue(value){
+  if(window.CSS && CSS.escape) return CSS.escape(value);
+  return String(value).replace(/[^a-zA-Z0-9_-]/g,'\\$&');
+}
+
+
+function refreshLiveCalculations(repIndex, weekId){
+  const rep = app.reps[repIndex];
+  if(!rep) return;
+  const week = rep.weeks.find(w=>w.id === weekId);
+  if(!week) return;
+
+  const mt = monthlyTotals(rep, week.weekOf);
+  const heldPct = Math.min(100, Math.round((mt.heldDemos / Math.max(1,num(app.demoTarget))) * 100));
+  const mrrPct = Math.min(100, Math.round((mt.mrr / Math.max(1,num(app.mrrTarget))) * 100));
+  const setPct = Math.min(100, Math.round((mt.setDemos / Math.max(1,num(app.demoTarget))) * 100));
+  const callsPerSet = num(week.setDemos) ? Math.round(num(week.calls)/num(week.setDemos)) : '—';
+  const opp = opportunityOutlook(rep, week);
+  const status = repStatus(rep);
+  const focus = recommendedFocus(rep, week);
+
+  // Rep header monthly summary
+  const headerSet = document.querySelector('[data-header-set]');
+  const headerHeld = document.querySelector('[data-header-held]');
+  const headerMrr = document.querySelector('[data-header-mrr]');
+  if(headerSet) headerSet.textContent = mt.setDemos;
+  if(headerHeld) headerHeld.textContent = mt.heldDemos;
+  if(headerMrr) headerMrr.textContent = fmtMoney(mt.mrr);
+
+  // Update all visible week cards in the same month for this rep
+  rep.weeks.filter(w => monthKey(w.weekOf) === monthKey(week.weekOf)).forEach(w => {
+    const card = document.querySelector(`[data-week-id="${w.id}"]`);
+    if(!card) return;
+
+    const setEl = card.querySelector('[data-mtd-set]');
+    const heldEl = card.querySelector('[data-mtd-held]');
+    const mrrEl = card.querySelector('[data-mtd-mrr]');
+    const heldPctEl = card.querySelector('[data-mtd-held-pct]');
+    const mrrPctEl = card.querySelector('[data-mtd-mrr-pct]');
+    const setBar = card.querySelector('[data-mtd-set-bar]');
+    const heldBar = card.querySelector('[data-mtd-held-bar]');
+    const mrrBar = card.querySelector('[data-mtd-mrr-bar]');
+    if(setEl) setEl.textContent = mt.setDemos;
+    if(heldEl) heldEl.textContent = mt.heldDemos;
+    if(mrrEl) mrrEl.textContent = fmtMoney(mt.mrr);
+    if(heldPctEl) heldPctEl.textContent = heldPct + '%';
+    if(mrrPctEl) mrrPctEl.textContent = mrrPct + '%';
+    if(setBar) setBar.style.width = setPct + '%';
+    if(heldBar) heldBar.style.width = heldPct + '%';
+    if(mrrBar) mrrBar.style.width = mrrPct + '%';
+  });
+
+  // Calls per set demo
+  const card = document.querySelector(`[data-week-id="${weekId}"]`);
+  if(card){
+    const cps = card.querySelector('[data-calls-per-set]');
+    if(cps) cps.value = callsPerSet;
+
+    const oppStatus = card.querySelector('[data-opp-status]');
+    if(oppStatus){
+      oppStatus.textContent = opp.label;
+      oppStatus.className = 'status ' + opp.cls;
+    }
+
+    const cardStatus = card.querySelector('[data-week-status]');
+    if(cardStatus){
+      cardStatus.textContent = status.label;
+      cardStatus.className = 'status ' + status.cls;
+    }
+
+    const focusEl = card.querySelector('[data-recommended-focus]');
+    if(focusEl) focusEl.textContent = focus;
+  }
+
+  // Product mix also depends on product demo inputs.
+  updateProductMixLive(repIndex, weekId);
+}
+
+
+function toggleWeek(repId, weekId){
+  const rep = app.reps.find(r=>r.id === repId);
+  if(!rep) return;
+  const week = rep.weeks.find(w=>w.id === weekId);
+  if(!week) return;
+  week.expanded = !week.expanded;
+  persist();
+  const card = document.querySelector(`[data-week-id="${weekId}"]`);
+  if(card){
+    card.classList.toggle('closed', !week.expanded);
+    const chev = card.querySelector('.chev');
+    if(chev) chev.textContent = week.expanded ? '⌄' : '›';
+    const hint = card.querySelector('.week-hint');
+    if(hint) hint.textContent = week.expanded ? 'Click to collapse' : 'Click to expand';
+  }
+}
+
+function addWeek(){
+  const rep = app.reps[activeRep];
+  rep.weeks.forEach(w=>w.expanded=false);
+  const nw = emptyWeek();
+  nw.expanded = true;
+  rep.weeks.push(nw);
+  // Keep notes tab in sync with the same rep
+  notesRepFilter = activeRep;
+  saveAndRender();
+}
+
+function deleteSelectedWeek(){
+  const rep = app.reps[activeRep];
+  const select = document.getElementById('deleteWeekSelect');
+  if(!rep || !select) return;
+  const id = select.value;
+  const week = rep.weeks.find(w=>w.id === id);
+  if(!week) return;
+  if(!confirm(`Delete week of ${week.weekOf}?`)) return;
+  rep.weeks = rep.weeks.filter(w=>w.id !== id);
+  if(rep.weeks.length===0) rep.weeks.push(emptyWeek());
+  saveAndRender();
+}
+
+function input(label,value,oninput,type='text'){
+  return `<div class="field"><label class="label">${label}</label><input type="${type}" value="${escapeAttr(value ?? '')}" oninput="${oninput}"></div>`;
+}
+function textArea(label,value,oninput){
+  return `<div class="field"><label class="label">${label}</label><textarea oninput="${oninput}">${escapeHtml(value ?? '')}</textarea></div>`;
+}
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]))}
+function escapeAttr(s){return escapeHtml(s).replace(/`/g,'&#96;')}
+
+
+function buildOneOnOneEmail(rep, week){
+  return `Hi ${rep.name},
+
+Here is a recap of our 1:1 for the week of ${week.weekOf}.
+
+RESULTS
+Set Demos: ${week.setDemos || 0}
+Held Demos: ${week.demosHeld || 0}
+MRR: ${fmtMoney(week.mrr || 0)}
+Calls: ${week.calls || 0}
+Emails Sent: ${week.emails || 0}
+
+REP NOTES
+What is going well / proud of:
+${week.goingWell || ''}
+
+Top 3 priorities:
+${week.topPriorities || ''}
+
+Biggest challenge / blocker:
+${week.biggestBlocker || ''}
+
+Suggestions / improvements:
+${week.suggestions || ''}
+
+MANAGER FEEDBACK
+${week.managerFeedback || ''}
+
+ACTION ITEMS
+${week.actionItems || ''}
+
+Thanks,`;
+}
+
+function emailOneOnOneNotes(repIndex, weekId){
+  const rep = app.reps[repIndex];
+  if(!rep) return;
+  const week = rep.weeks.find(w=>w.id === weekId);
+  if(!week) return;
+
+  const to = rep.email || '';
+  const subject = encodeURIComponent(`1:1 Notes - ${rep.name} - Week of ${week.weekOf}`);
+  const body = encodeURIComponent(buildOneOnOneEmail(rep, week));
+
+  if(!to){
+    const proceed = confirm('No email is saved for this rep. Open email draft without a recipient?');
+    if(!proceed) return;
+  }
+
+  window.location.href = `mailto:${encodeURIComponent(to)}?subject=${subject}&body=${body}`;
+}
+
+async function copyOneOnOneNotes(repIndex, weekId){
+  const rep = app.reps[repIndex];
+  if(!rep) return;
+  const week = rep.weeks.find(w=>w.id === weekId);
+  if(!week) return;
+
+  try{
+    await navigator.clipboard.writeText(buildOneOnOneEmail(rep, week));
+    alert('1:1 notes copied.');
+  }catch(e){
+    alert('Could not copy notes.');
+  }
+}
+
+
+function renderDashboard(){
+  const latest = app.reps.map((rep,i)=>({rep,i,week:rep.weeks[rep.weeks.length-1],status:repStatus(rep)}));
+  const team = latest.reduce((a,x)=>{
+    a.setDemos += num(x.week.setDemos);
+    a.heldDemos += num(x.week.demosHeld);
+    a.mrr += num(x.week.mrr);
+    a.calls += num(x.week.calls);
+    a.emails += num(x.week.emails);
+    return a;
+  },{setDemos:0,heldDemos:0,mrr:0,calls:0,emails:0});
+  return `
+    <div class="grid grid4">
+      <div class="card kpi"><div class="label">Team Set Demos</div><div class="value">${team.setDemos}</div><div class="sub">Latest week total</div></div>
+      <div class="card kpi"><div class="label">Team Held Demos</div><div class="value">${team.heldDemos}</div><div class="sub">Monthly quota ${num(app.demoTarget)*app.reps.length}</div></div>
+      <div class="card kpi"><div class="label">Team MRR</div><div class="value">${fmtMoney(team.mrr)}</div><div class="sub">Monthly quota ${fmtMoney(num(app.mrrTarget)*app.reps.length)}</div></div>
+      <div class="card kpi"><div class="label">Team Activity</div><div class="value">${team.calls.toLocaleString()}</div><div class="sub">${team.emails.toLocaleString()} emails</div></div>
+    </div>
+
+    <div class="card" style="margin-top:16px">
+      <div class="row">
+        <div><h2>Rep Scoreboard</h2><p>Status-based leadership view. Click a rep to open their scorecard.</p></div>
+      </div>
+      <div class="dashboard-reps" style="margin-top:14px">
+        ${latest.map(x=>{
+          const mt = monthlyTotals(x.rep,x.week.weekOf);
+          const opp = opportunityOutlook(x.rep,x.week);
+          const reasons = x.status.label === 'At Risk' ? atRiskReasons(x.rep, x.week) : [];
+          return `<div class="rep-card" onclick="activeRep=${x.i};setTab('reps')">
+            <div class="row">
+              <div><b>${escapeHtml(x.rep.name)}</b><div class="small">Recommended Focus: ${recommendedFocus(x.rep,x.week)}</div></div>
+              <span class="status ${x.status.cls}">${x.status.label}</span>
+            </div>
+            <div class="rep-card-metrics">
+              <div class="metric-tile"><span class="small">Set</span><b>${num(x.week.setDemos)}</b></div>
+              <div class="metric-tile"><span class="small">Held MTD</span><b>${mt.heldDemos}/${app.demoTarget}</b></div>
+              <div class="metric-tile"><span class="small">MRR MTD</span><b>${fmtMoney(mt.mrr)}</b></div>
+              <div class="metric-tile"><span class="small">Calls</span><b>${num(x.week.calls).toLocaleString()}</b></div>
+              <div class="metric-tile"><span class="small">Emails</span><b>${num(x.week.emails).toLocaleString()}</b></div>
+              <div class="metric-tile"><span class="small">Outlook</span><b>${opp.label}</b></div>
+            </div>
+            ${renderStatusWhy(x.rep,x.week,'dashboard')}
+          </div>`;
+        }).join('')}
+      </div>
+    </div>
+  `;
+}
+
+function repHeader(rep){
+  const latest = rep.weeks[rep.weeks.length-1];
+  const mt = monthlyTotals(rep,latest.weekOf);
+  return `<div class="card rep-header">
+    ${input('Rep Name',rep.name,`app.reps[${activeRep}].name=this.value;persist()`)}
+    <div class="month-summary">
+      <div class="small">Monthly running total</div>
+      <div class="month-summary-line">
+        <b>Set Demos:</b> <span data-header-set>${mt.setDemos}</span> &nbsp;•&nbsp;
+        <b>Held Demos:</b> <span data-header-held>${mt.heldDemos}</span>/${app.demoTarget} &nbsp;•&nbsp;
+        <b>MRR:</b> <span data-header-mrr>${fmtMoney(mt.mrr)}</span>/${fmtMoney(app.mrrTarget)}
+      </div>
+    </div>
+  </div>`;
+}
+
+function monthlyProgress(rep,week){
+  const mt = monthlyTotals(rep,week.weekOf);
+  const heldPct = Math.min(100, Math.round((mt.heldDemos / Math.max(1,num(app.demoTarget))) * 100));
+  const mrrPct = Math.min(100, Math.round((mt.mrr / Math.max(1,num(app.mrrTarget))) * 100));
+  const setPct = Math.min(100, Math.round((mt.setDemos / Math.max(1,num(app.demoTarget))) * 100));
+  return `<div class="progress-row">
+    <div class="progress-card"><div class="small">Set Demos MTD</div><div class="big" data-mtd-set>${mt.setDemos}</div><div class="small">Tracked weekly</div><div class="progress-bg"><div class="progress-fill" data-mtd-set-bar style="width:${setPct}%"></div></div></div>
+    <div class="progress-card"><div class="small">Held Demos MTD</div><div class="big"><span data-mtd-held>${mt.heldDemos}</span>/${app.demoTarget}</div><div class="small"><span data-mtd-held-pct>${heldPct}%</span> to quota</div><div class="progress-bg"><div class="progress-fill" data-mtd-held-bar style="width:${heldPct}%"></div></div></div>
+    <div class="progress-card"><div class="small">MRR MTD</div><div class="big" data-mtd-mrr>${fmtMoney(mt.mrr)}</div><div class="small"><span data-mtd-mrr-pct>${mrrPct}%</span> to quota</div><div class="progress-bg"><div class="progress-fill" data-mtd-mrr-bar style="width:${mrrPct}%"></div></div></div>
+  </div>`;
+}
+
+
+function productCategoryTotal(week, category){
+  const source = week[category] || {};
+  return app.products.reduce((sum,p)=>sum+num(source[p]),0);
+}
+
+function renderProductCategory(repIndex, week, category, title){
+  const source = week[category] || {};
+  const total = productCategoryTotal(week, category);
+  return `<div class="section" style="margin-bottom:14px">
+    <div class="section-head"><h3>${title}</h3><span class="status blue">${total} total</span></div>
+    <div class="product-percent-grid">
+      ${app.products.map(p=>{
+        const val = num(source[p]);
+        const pct = total ? Math.round((val/total)*100) : 0;
+        return `<div class="product-percent"><div class="small">${escapeHtml(p)}</div><div class="pct" data-product-pct="${category}-${escapeAttr(p)}">${pct}%</div></div>`;
+      }).join('')}
+    </div>
+    ${app.products.map(p=>{
+      const val = num(source[p]);
+      const pct = total ? Math.min(100,(val/total)*100) : 0;
+      return `<div class="product-line">
+        <div class="row" style="margin-bottom:6px">
+          <label class="label" style="margin:0">${escapeHtml(p)}</label>
+          <input value="${escapeAttr(source[p] ?? '')}" oninput="updateProduct(${repIndex},'${week.id}','${category}','${escapeAttr(p)}',this.value)">
+        </div>
+        <div class="bar-bg"><div class="bar" data-product-bar="${category}-${escapeAttr(p)}" style="width:${pct}%"></div></div>
+      </div>`;
+    }).join('')}
+  </div>`;
+}
+
+function renderWeekCard(rep,repIndex,week){
+  const status = repStatus(rep);
+  const opp = opportunityOutlook(rep,week);
+  const ph = productHealth(week);
+  const callsPerSet = num(week.setDemos) ? Math.round(num(week.calls)/num(week.setDemos)) : '—';
+  return `<div class="week-card ${week.expanded ? 'open' : 'closed'}" data-week-id="${week.id}">
+    <div class="week-head row" onclick="toggleWeek('${rep.id}','${week.id}')">
+      <div class="week-title">
+        <span class="chev">${week.expanded ? '⌄' : '›'}</span>
+        <div>
+          <b>Week of ${escapeHtml(week.weekOf)}</b>
+          <div class="small"><span class="week-hint">${week.expanded ? 'Click to collapse' : 'Click to expand'}</span> • Recommended Focus: <span data-recommended-focus>${recommendedFocus(rep,week)}</span></div>
+        </div>
+      </div>
+      <div class="row" style="gap:8px;justify-content:flex-end">
+        <div>
+          <span class="status ${status.cls}" data-week-status>${status.label}</span>
+          ${renderStatusWhy(rep,week,'week')}
+        </div>
+        <button class="btn" type="button" onclick="event.stopPropagation();copyOneOnOneNotes(${repIndex},'${week.id}')">Copy 1:1</button>
+        <button class="btn-primary" type="button" onclick="event.stopPropagation();emailOneOnOneNotes(${repIndex},'${week.id}')">Email 1:1</button>
+      </div>
+    </div>
+    <div class="week-body">
+      <div>
+        <div>
+          ${input('Week Of',week.weekOf,`updateWeek(${repIndex},'${week.id}','weekOf',this.value)`,'date')}
+          ${input('Held Demo Quota',app.demoTarget,'','text').replace('<input','<input readonly')}
+        </div>
+        ${monthlyProgress(rep,week)}
+
+        <div class="section">
+          <div class="section-head"><h3>Results</h3></div>
+          <div class="grid grid3">
+            ${input('Set Demos',week.setDemos,`updateWeek(${repIndex},'${week.id}','setDemos',this.value)`)}
+            ${input('Held Demos',week.demosHeld,`updateWeek(${repIndex},'${week.id}','demosHeld',this.value)`)}
+            ${input('MRR',week.mrr,`updateWeek(${repIndex},'${week.id}','mrr',this.value)`)}
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-head"><h3>Activity</h3></div>
+          <div>
+            ${input('Calls',week.calls,`updateWeek(${repIndex},'${week.id}','calls',this.value)`)}
+            ${input('Emails Sent',week.emails,`updateWeek(${repIndex},'${week.id}','emails',this.value)`)}
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-head"><h3>Execution</h3></div>
+          <div>
+            <div class="field"><label class="label">Calls per Set Demo</label><input readonly data-calls-per-set value="${callsPerSet}"></div>
+          </div>
+        </div>
+
+        <div class="section" data-visibility="manager">
+          <div class="section-head"><h3>Opportunities / MRR Outlook</h3><span class="status ${opp.cls}" data-opp-status>${opp.label}</span></div>
+          ${renderStatusWhy(rep,week,'opp')}
+          <div class="help">Use this to capture whether the rep has enough open pipeline to support MRR pacing. Enter total open opportunities and total pipeline MRR.</div>
+          <div>
+            ${input('Open Opportunities',week.oppCount,`updateWeek(${repIndex},'${week.id}','oppCount',this.value)`)}
+            ${input('Pipeline MRR',week.pipelineMrr,`updateWeek(${repIndex},'${week.id}','pipelineMrr',this.value)`)}
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="section">
+          <div class="section-head"><h3>Product Mix</h3><span class="status ${ph.cls}">${ph.label}</span></div>
+          ${renderStatusWhy(rep,week,'product')}
+          <div class="small" style="margin-bottom:12px">Set demos drive the product mix health indicator. Products represented: <span data-product-count>${ph.count}</span> • Top concentration: <span data-product-concentration>${Math.round(ph.concentration*100)}%</span></div>
+          ${renderProductCategory(repIndex, week, 'productSet', 'Demos Set by Product')}
+          ${renderProductCategory(repIndex, week, 'productHeld', 'Demos Held by Product')}
+          ${renderProductCategory(repIndex, week, 'productClosed', 'Closed Deals by Product')}
+        </div>
+
+      </div>
+    </div>
+  </div>`;
+}
+
+function setViewMode(mode){ viewMode = mode; }
+function viewToggle(){ return ''; }
+function applyViewModeClass(){ /* manager view removed */ }
+function renderReps(){
+  const rep = app.reps[activeRep] || app.reps[0];
+  const deleteOptions = [...rep.weeks].sort((a,b)=>b.weekOf.localeCompare(a.weekOf)).map(w=>`<option value="${w.id}">${escapeHtml(w.weekOf)}</option>`).join('');
+  return `<div class="layout-reps">
+    <aside class="card rep-list">
+      <h3>BDRs</h3>
+      <p style="margin-bottom:12px">Select a rep</p>
+      ${app.reps.map((r,i)=>`<button class="${i===activeRep?'active':''}" onclick="activeRep=${i};render()">${escapeHtml(r.name)}</button>`).join('')}
+    </aside>
+    <section>
+      ${repHeader(rep)}
+      <div class="row" style="margin:16px 0">
+        <div><h2>Weekly 1:1 Scorecards</h2><p>Click a week header to expand or collapse it. Fields save silently while you type.</p>${viewToggle()}</div>
+        <div class="week-controls">
+          <button class="btn-primary" onclick="addWeek()">+ Add Week</button>
+          <div class="field">
+            <label class="label">Delete Week</label>
+            <select id="deleteWeekSelect">${deleteOptions}</select>
+          </div>
+          <button class="btn-danger" onclick="deleteSelectedWeek()">Delete Selected</button>
+        </div>
+      </div>
+      ${[...rep.weeks].sort((a,b)=>b.weekOf.localeCompare(a.weekOf)).map(w=>renderWeekCard(rep,activeRep,w)).join('')}
+    </section>
+  </div>`;
+}
+
+function reportYears(rep){
+  const years = app.reportYears && app.reportYears.length ? app.reportYears : ['2025','2026'];
+  return [...new Set(years.map(String))].sort((a,b)=>Number(b)-Number(a));
+}
+
+function getHistorical(repName, monthKeyValue){
+  return app.historicalData.find(h => h.repName === repName && h.month === monthKeyValue);
+}
+
+function combinedMonthlyData(rep, monthKeyValue){
+  const live = monthsForYear(rep, monthKeyValue.slice(0,4)).find(m => m.month === monthKeyValue) || {setDemos:0,heldDemos:0,mrr:0,calls:0,emails:0};
+  const hist = getHistorical(rep.name, monthKeyValue);
+  return {
+    month: monthKeyValue,
+    setDemos: live.setDemos + (hist?.setDemos || 0),
+    heldDemos: live.heldDemos + (hist?.heldDemos || 0),
+    mrr: live.mrr + (hist?.mrr || 0),
+    calls: live.calls + (hist?.calls || 0),
+    emails: live.emails + (hist?.emails || 0),
+  };
+}
+
+function saveHistoricalEntry(){
+  const repSelect = document.getElementById('histRep');
+  const monthInput = document.getElementById('histMonth');
+  const histSet = document.getElementById('histSet');
+  const histHeld = document.getElementById('histHeld');
+  const histMrr = document.getElementById('histMrr');
+  const histCalls = document.getElementById('histCalls');
+  const histEmails = document.getElementById('histEmails');
+  if(!repSelect || !monthInput) return;
+  const repIndex = Number(repSelect.value);
+  const rep = app.reps[repIndex];
+  const month = monthInput.value;
+  if(!month){ alert('Please select a month.'); return; }
+  if(!rep){ alert('Please select a rep.'); return; }
+
+  const entry = {
+    id: uid(),
+    repName: rep.name,
+    month,
+    setDemos: num(histSet?.value),
+    heldDemos: num(histHeld?.value),
+    mrr: num(histMrr?.value),
+    calls: num(histCalls?.value),
+    emails: num(histEmails?.value)
+  };
+
+  const existing = app.historicalData.findIndex(h => h.repName === rep.name && h.month === month);
+  if(existing >= 0){
+    app.historicalData[existing] = {...app.historicalData[existing], ...entry};
+  } else {
+    app.historicalData.push(entry);
+  }
+
+  saveAndRender();
+}
+
+function deleteHistoricalEntry(id){
+  if(!confirm('Delete this historical entry?')) return;
+  app.historicalData = app.historicalData.filter(h => h.id !== id);
+  saveAndRender();
+}
+
+function productMixHistory(rep){
+  const monthMap = {};
+  rep.weeks.forEach(w => {
+    const mk = monthKey(w.weekOf);
+    if(!monthMap[mk]){
+      monthMap[mk] = { total:0, products:{} };
+      app.products.forEach(p => monthMap[mk].products[p] = 0);
+    }
+    app.products.forEach(p => {
+      const val = num(w.productDemos[p]);
+      monthMap[mk].products[p] += val;
+      monthMap[mk].total += val;
+    });
+  });
+  return monthMap;
+}
+
+function heatColor(pct){
+  if(pct >= 50) return 'background:rgba(52,211,153,.30)';
+  if(pct >= 30) return 'background:rgba(96,165,250,.22)';
+  if(pct >= 15) return 'background:rgba(251,191,36,.20)';
+  if(pct > 0) return 'background:rgba(255,255,255,.06)';
+  return '';
+}
+
+function renderHistorical(){
+  // Use a stable rep index for heatmap, separate from activeRep (which may be 'team'/'allreps')
+  const histActiveRep = (typeof activeRep === 'number') ? activeRep : 0;
+  const histRep = app.reps[histActiveRep] || app.reps[0];
+
+  // Build product mix history using productSet (primary) falling back to productDemos
+  function productMixHistoryFixed(rep){
+    const monthMap = {};
+    rep.weeks.forEach(w => {
+      const mk = monthKey(w.weekOf);
+      if(!monthMap[mk]){ monthMap[mk] = { total:0, products:{} }; app.products.forEach(p => monthMap[mk].products[p] = 0); }
+      app.products.forEach(p => {
+        const val = num((w.productSet||{})[p] ?? (w.productDemos||{})[p]);
+        monthMap[mk].products[p] += val;
+        monthMap[mk].total += val;
+      });
+    });
+    return monthMap;
+  }
+
+  const hist = productMixHistoryFixed(histRep);
+  const histMonths = Object.keys(hist).sort();
+
+  return `<div style="display:grid;gap:16px">
+    <div class="card">
+      <h2>Historical Monthly Entry</h2>
+      <p>Backfill older months without creating weekly cards. Data merges into Monthly Report.</p>
+      <div class="grid grid2" style="margin-top:14px">
+        <div class="field">
+          <label class="label">Rep</label>
+          <select id="histRep">
+            ${app.reps.map((r,i)=>`<option value="${i}">${escapeHtml(r.name)}</option>`).join('')}
+          </select>
+        </div>
+        <div class="field">
+          <label class="label">Month (YYYY-MM)</label>
+          <input id="histMonth" type="month" placeholder="2025-01">
+        </div>
+        <div class="field">
+          <label class="label">Set Demos</label>
+          <input id="histSet" type="number" min="0" placeholder="0">
+        </div>
+        <div class="field">
+          <label class="label">Held Demos</label>
+          <input id="histHeld" type="number" min="0" placeholder="0">
+        </div>
+        <div class="field">
+          <label class="label">MRR ($)</label>
+          <input id="histMrr" type="number" min="0" placeholder="0">
+        </div>
+        <div class="field">
+          <label class="label">Calls</label>
+          <input id="histCalls" type="number" min="0" placeholder="0">
+        </div>
+        <div class="field">
+          <label class="label">Emails</label>
+          <input id="histEmails" type="number" min="0" placeholder="0">
+        </div>
+      </div>
+      <button class="btn-primary" onclick="saveHistoricalEntry()">Save Historical Month</button>
+    </div>
+
+    <div class="card">
+      <div class="row" style="margin-bottom:14px">
+        <div><h2>Historical Entries</h2><p>${app.historicalData.length} entries saved</p></div>
+      </div>
+      ${app.historicalData.length === 0 
+        ? `<p style="color:var(--muted);text-align:center;padding:20px">No historical entries yet. Use the form above to add one.</p>`
+        : `<div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Rep</th><th>Month</th><th>Set</th><th>Held</th><th>MRR</th><th>Calls</th><th>Emails</th><th></th></tr>
+            </thead>
+            <tbody>
+              ${[...app.historicalData].sort((a,b)=>b.month.localeCompare(a.month)).map(h=>`
+                <tr>
+                  <td><b>${escapeHtml(h.repName)}</b></td>
+                  <td>${h.month}</td>
+                  <td>${h.setDemos||0}</td>
+                  <td>${h.heldDemos||0}</td>
+                  <td>${fmtMoney(h.mrr||0)}</td>
+                  <td>${(h.calls||0).toLocaleString()}</td>
+                  <td>${(h.emails||0).toLocaleString()}</td>
+                  <td><button class="btn-danger" onclick="deleteHistoricalEntry('${h.id}')">Delete</button></td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+        </div>`
+      }
+    </div>
+
+    <div class="card">
+      <div class="row" style="margin-bottom:14px">
+        <div><h2>Product Mix History Heatmap</h2><p>Monthly product concentration (Demos Set) for selected rep.</p></div>
+        <div class="field" style="max-width:240px;margin:0">
+          <label class="label">Rep</label>
+          <select onchange="activeRep=Number(this.value);render()">
+            ${app.reps.map((r,i)=>`<option value="${i}" ${i===histActiveRep?'selected':''}>${escapeHtml(r.name)}</option>`).join('')}
+          </select>
+        </div>
+      </div>
+      ${histMonths.length === 0
+        ? `<p style="color:var(--muted);text-align:center;padding:20px">No weekly data found for ${escapeHtml(histRep.name)}. Add weeks in Rep Scorecards first.</p>`
+        : `<div class="table-wrap">
+          <table class="month-matrix">
+            <thead>
+              <tr>
+                <th class="row-label">Month</th>
+                ${app.products.map(p=>`<th>${escapeHtml(p)}</th>`).join('')}
+                <th>Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${histMonths.map(m=>`
+                <tr>
+                  <td class="row-label">${m}</td>
+                  ${app.products.map(p=>{
+                    const total = hist[m].total || 0;
+                    const val = hist[m].products[p] || 0;
+                    const pct = total ? Math.round((val/total)*100) : 0;
+                    return `<td class="heat" style="${heatColor(pct)}">${val > 0 ? val + ' (' + pct + '%)' : '—'}</td>`;
+                  }).join('')}
+                  <td style="font-weight:700">${hist[m].total}</td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+        </div>`
+      }
+    </div>
+  </div>`;
+}
+
+
+function annualQuotaTracker(totals){
+  const annualHeldQuota = num(app.demoTarget) * 12;
+  const annualMrrQuota = num(app.mrrTarget) * 12;
+  const heldPct = annualHeldQuota ? Math.min(100, Math.round((totals.heldDemos / annualHeldQuota) * 100)) : 0;
+  const mrrPct = annualMrrQuota ? Math.min(100, Math.round((totals.mrr / annualMrrQuota) * 100)) : 0;
+  return `<div class="annual-tracker">
+    <div class="row">
+      <div>
+        <h3>Annual Quota Tracker</h3>
+        <p>Year-to-date progress against annualized quota for the selected rep.</p>
+      </div>
+    </div>
+    <div class="annual-tracker-grid">
+      <div class="annual-metric">
+        <div class="small">Held Demos Annual Progress</div>
+        <div class="big">${totals.heldDemos}/${annualHeldQuota}</div>
+        <div class="subline">${heldPct}% to annual quota</div>
+        <div class="progress-bg"><div class="progress-fill" style="width:${heldPct}%"></div></div>
+      </div>
+      <div class="annual-metric">
+        <div class="small">MRR Annual Progress</div>
+        <div class="big">${fmtMoney(totals.mrr)} / ${fmtMoney(annualMrrQuota)}</div>
+        <div class="subline">${mrrPct}% to annual quota</div>
+        <div class="progress-bg"><div class="progress-fill" style="width:${mrrPct}%"></div></div>
+      </div>
+    </div>
+  </div>`
+}
+
+function monthlyOverrideKey(repId, month, metric){
+  return `${repId}|${month}|${metric}`;
+}
+function getMonthlyOverride(repId, month, metric){
+  return app.monthlyOverrides?.[monthlyOverrideKey(repId, month, metric)];
+}
+function setMonthlyOverride(repId, month, metric, value){
+  if(!app.monthlyOverrides) app.monthlyOverrides = {};
+  app.monthlyOverrides[monthlyOverrideKey(repId, month, metric)] = value;
+  persist();
+  updateMonthlyReportTotalsLive(repId);
+  refreshMonthlyYtdLive();
+}
+function monthlyReportValue(rep, month, metric, baseValue){
+  const override = getMonthlyOverride(rep.id, month, metric);
+  return override !== undefined ? override : baseValue;
+}
+function editableMonthCell(rep, month, metric, value, cls=''){
+  return `<td class="${cls}">
+    <input style="text-align:center;padding:7px;font-size:13px" value="${escapeAttr(value || '')}" 
+      oninput="setMonthlyOverride('${rep.id}','${month}','${metric}',this.value)">
+  </td>`;
+}
+function updateMonthlyReportTotalsLive(repId){
+  const rep = app.reps.find(r=>r.id===repId);
+  if(!rep) return;
+  const year = monthlyReportYear || yearKey(weekLabel());
+  const baseMonths = monthsForYear(rep, year);
+  let held = 0, mrr = 0, set = 0, calls = 0, emails = 0;
+  for(let i=1;i<=12;i++){
+    const month = year + '-' + String(i).padStart(2,'0');
+    const base = baseMonths.find(m=>m.month===month) || {};
+    held += num(monthlyReportValue(rep,month,'heldDemos',base.heldDemos || 0));
+    mrr += num(monthlyReportValue(rep,month,'mrr',base.mrr || 0));
+    set += num(monthlyReportValue(rep,month,'setDemos',base.setDemos || 0));
+    calls += num(monthlyReportValue(rep,month,'calls',base.calls || 0));
+    emails += num(monthlyReportValue(rep,month,'emails',base.emails || 0));
+  }
+  const heldEl = document.querySelector('[data-ytd-held]');
+  const setEl = document.querySelector('[data-ytd-set]');
+  const mrrEl = document.querySelector('[data-ytd-mrr]');
+  const activityEl = document.querySelector('[data-ytd-activity]');
+  const emailEl = document.querySelector('[data-ytd-emails]');
+  if(heldEl) heldEl.textContent = held;
+  if(setEl) setEl.textContent = set;
+  if(mrrEl) mrrEl.textContent = fmtMoney(mrr);
+  if(activityEl) activityEl.textContent = calls.toLocaleString();
+  if(emailEl) emailEl.textContent = emails.toLocaleString() + ' emails';
+}
+
+
+
+function pacingLabel(ytd, annualQuota){
+  if(!annualQuota || !ytd) return '';
+  const now = new Date();
+  const monthsElapsed = now.getMonth() + (now.getDate() / 31);
+  const expected = (annualQuota / 12) * monthsElapsed;
+  if(ytd >= expected * 0.95) return '<div style="font-size:10px;color:#a7f3d0;margin-top:2px">&#8593; Pacing</div>';
+  return '<div style="font-size:10px;color:#fca5a5;margin-top:2px">&#8595; Off Pace</div>';
+}
+
+function monthlyRepData(rep, year){
+  const baseMonths = monthsForYear(rep,year);
+  return baseMonths.map(m=>({
+    ...m,
+    setDemos: monthlyReportValue(rep,m.month,'setDemos',m.setDemos || ''),
+    heldDemos: monthlyReportValue(rep,m.month,'heldDemos',m.heldDemos || ''),
+    mrr: monthlyReportValue(rep,m.month,'mrr',m.mrr || ''),
+    calls: monthlyReportValue(rep,m.month,'calls',m.calls || ''),
+    emails: monthlyReportValue(rep,m.month,'emails',m.emails || '')
+  }));
+}
+
+function monthlyTeamData(year){
+  return monthNames.map((_,i)=>{
+    const month = year + '-' + String(i+1).padStart(2,'0');
+    return app.reps.reduce((acc,rep)=>{
+      const row = monthlyRepData(rep,year).find(m=>m.month===month) || {};
+      acc.setDemos += num(row.setDemos);
+      acc.heldDemos += num(row.heldDemos);
+      acc.mrr += num(row.mrr);
+      acc.calls += num(row.calls);
+      acc.emails += num(row.emails);
+      return acc;
+    },{month,setDemos:0,heldDemos:0,mrr:0,calls:0,emails:0,weeks:1});
+  });
+}
+
+
+function currentPaceMonthCount(year){
+  const now = new Date();
+  const currentYear = now.getFullYear();
+  const y = Number(year);
+  if(y < currentYear) return 12;
+  if(y > currentYear) return 0;
+  return now.getMonth() + 1;
+}
+
+function ytdTargetForMetric(metric, year, isTeam){
+  const monthsElapsed = currentPaceMonthCount(year);
+  const multiplier = isTeam ? app.reps.length : 1;
+  if(metric === 'heldDemos') return num(app.demoTarget) * monthsElapsed * multiplier;
+  if(metric === 'mrr') return num(app.mrrTarget) * monthsElapsed * multiplier;
+  if(metric === 'calls') return num(app.weeklyCallTarget) * 4 * monthsElapsed * multiplier;
+  if(metric === 'emails') return num(app.weeklyEmailTarget) * 4 * monthsElapsed * multiplier;
+  return 0;
+}
+
+function formatDelta(metric, actual, target){
+  if(!target) return '';
+  const diff = num(actual) - num(target);
+  const cls = diff > 0 ? 'delta-up' : diff < 0 ? 'delta-down' : 'delta-flat';
+  const sign = diff > 0 ? '+' : diff < 0 ? '-' : '';
+  const absVal = Math.abs(Math.round(diff));
+  const value = metric === 'mrr' ? fmtMoney(absVal) : absVal.toLocaleString();
+  const label = diff >= 0 ? 'above pace' : 'below pace';
+  return `<div class="${cls}" style="font-size:11px;margin-top:3px">${sign}${value} ${label}</div>`;
+}
+
+function monthlyReasoning(metric, actual, target, year, label){
+  if(!target) return '';
+  const monthsElapsed = currentPaceMonthCount(year);
+  const pct = target ? Math.round((num(actual)/target)*100) : 0;
+  const actualDisplay = metric === 'mrr' ? fmtMoney(actual) : Math.round(num(actual)).toLocaleString();
+  const targetDisplay = metric === 'mrr' ? fmtMoney(target) : Math.round(num(target)).toLocaleString();
+  const id = 'why_' + metric + '_' + Math.random().toString(16).slice(2);
+  return `<button class="why-toggle" onclick="toggleWhy('${id}')">Why?</button>
+    <div id="${id}" class="why-panel">
+      <div><b>${label}</b></div>
+      <div>Actual YTD: ${actualDisplay}</div>
+      <div>Expected pace through ${monthsElapsed} month(s): ${targetDisplay}</div>
+      <div>YTD pace: ${pct}%</div>
+      <div>${num(actual) >= num(target) ? 'On or ahead of cumulative pace.' : 'Behind cumulative pace.'}</div>
+    </div>`;
+}
+
+function toggleWhy(id){
+  const el = document.getElementById(id);
+  if(el) el.classList.toggle('open');
+}
+
+
+function statusReasoning(rep, week){
+  const mt = monthlyTotals(rep, week.weekOf);
+  const opp = opportunityOutlook(rep, week);
+  const ph = productHealth(week);
+  const status = repStatus(rep);
+  const reasons = [];
+
+  const heldPct = Math.round((mt.heldDemos / Math.max(1,num(app.demoTarget))) * 100);
+  const mrrPct = Math.round((mt.mrr / Math.max(1,num(app.mrrTarget))) * 100);
+  const callPct = Math.round((num(week.calls) / Math.max(1,num(app.weeklyCallTarget))) * 100);
+  const emailPct = Math.round((num(week.emails) / Math.max(1,num(app.weeklyEmailTarget))) * 100);
+
+  reasons.push(`Status: ${status.label}`);
+  reasons.push(`Held demos MTD: ${mt.heldDemos}/${app.demoTarget} (${heldPct}%)`);
+  reasons.push(`MRR MTD: ${fmtMoney(mt.mrr)}/${fmtMoney(app.mrrTarget)} (${mrrPct}%)`);
+  reasons.push(`Calls this week: ${num(week.calls).toLocaleString()}/${num(app.weeklyCallTarget).toLocaleString()} (${callPct}%)`);
+  reasons.push(`Emails this week: ${num(week.emails).toLocaleString()}/${num(app.weeklyEmailTarget).toLocaleString()} (${emailPct}%)`);
+  reasons.push(`Pipeline outlook: ${opp.label} — ${fmtMoney(opp.pipeline)} pipeline vs ${fmtMoney(opp.gap)} remaining MRR gap`);
+  reasons.push(`Product mix: ${ph.label} — ${ph.count} products represented, ${Math.round(ph.concentration*100)}% top concentration`);
+
+  if(status.label === 'Performing') reasons.push('Reason: Held demos and MRR are both at or above target.');
+  else if(status.label === 'On Track') reasons.push('Reason: At least one primary result or pipeline/activity signal is strong enough to support pacing.');
+  else reasons.push('Reason: Results, activity, and/or pipeline are not strong enough to support current pacing.');
+
+  return reasons;
+}
+
+function renderStatusWhy(rep, week, prefix='status'){
+  const id = prefix + '_' + week.id + '_' + Math.random().toString(16).slice(2);
+  return `<div class="status-why">
+    <button type="button" onclick="event.stopPropagation();toggleWhy('${id}')">Why?</button>
+    <div id="${id}" class="status-why-panel">
+      ${statusReasoning(rep,week).map(r=>`<div>• ${escapeHtml(r)}</div>`).join('')}
+    </div>
+  </div>`;
+}
+
+function monthlyMetricDefinitions(){
+  return [
+    {key:'heldDemos', label:'Held Demos', category:'Results', quota:num(app.demoTarget), isQuota:true},
+    {key:'mrr', label:'MRR', category:'Revenue', quota:num(app.mrrTarget), isQuota:true},
+    {key:'setDemos', label:'Set Demos', category:'Results', quota:0, isQuota:false},
+    {key:'calls', label:'Calls', category:'Activity', quota:num(app.weeklyCallTarget)*4, isQuota:false},
+    {key:'emails', label:'Emails', category:'Activity', quota:num(app.weeklyEmailTarget)*4, isQuota:false}
+  ];
+}
+
+function filteredMonthlyMetrics(){
+  const defs = monthlyMetricDefinitions();
+  if(!monthlyMetricFilter || monthlyMetricFilter === 'all') return defs;
+  return defs.filter(m => m.category === monthlyMetricFilter || m.key === monthlyMetricFilter);
+}
+
+
+
+function ytdCellInner(metric, total, target, year, label){
+  const display = metric === 'mrr' ? fmtMoney(total) : Math.round(num(total)).toLocaleString();
+  return `${display}${formatDelta(metric,total,target)}${monthlyReasoning(metric,total,target,year,label)}`;
+}
+
+function refreshMonthlyYtdLive(){
+  if(activeTab !== 'monthly') return;
+
+  const isTeamView = String(activeRep) === 'team';
+  const isAllRepsView = String(activeRep) === 'allreps';
+  const year = monthlyReportYear || yearKey(weekLabel());
+
+  function updateKpis(totals, isTeam){
+    const ytdHeldTarget = ytdTargetForMetric('heldDemos', year, isTeam);
+    const ytdMrrTarget = ytdTargetForMetric('mrr', year, isTeam);
+
+    const heldEl = document.querySelector('[data-ytd-held]');
+    const setEl = document.querySelector('[data-ytd-set]');
+    const mrrEl = document.querySelector('[data-ytd-mrr]');
+    const activityEl = document.querySelector('[data-ytd-activity]');
+    const emailsEl = document.querySelector('[data-ytd-emails]');
+
+    if(heldEl) heldEl.textContent = totals.heldDemos;
+    if(setEl) setEl.textContent = totals.setDemos;
+    if(mrrEl) mrrEl.textContent = fmtMoney(totals.mrr);
+    if(activityEl) activityEl.textContent = totals.calls.toLocaleString();
+    if(emailsEl) emailsEl.textContent = totals.emails.toLocaleString() + ' emails';
+  }
+
+  if(isAllRepsView){
+    app.reps.forEach(rep=>{
+      const repMonths = monthlyRepData(rep, year);
+      const repTotals = repMonths.reduce((a,m)=>{
+        a.setDemos += num(m.setDemos);
+        a.heldDemos += num(m.heldDemos);
+        a.mrr += num(m.mrr);
+        a.calls += num(m.calls);
+        a.emails += num(m.emails);
+        return a;
+      },{setDemos:0,heldDemos:0,mrr:0,calls:0,emails:0});
+
+      ['heldDemos','mrr','setDemos','calls','emails'].forEach(metric=>{
+        const el = document.querySelector(`[data-ytd-rep="${rep.id}"][data-ytd-metric="${metric}"]`);
+        if(!el) return;
+        const target = ytdTargetForMetric(metric, year, false);
+        const label = metric === 'heldDemos' ? 'Held Demos' : metric === 'mrr' ? 'MRR' : metric === 'setDemos' ? 'Set Demos' : metric === 'calls' ? 'Calls' : 'Emails';
+        el.innerHTML = ytdCellInner(metric, repTotals[metric], target, year, label);
+        el.className = target ? (num(repTotals[metric]) >= num(target) ? 'hit' : 'miss') : '';
+        el.style.fontWeight = '800';
+        el.style.background = 'rgba(96,165,250,.05)';
+      });
+    });
+
+    const teamMonths = monthlyTeamData(year);
+    const totals = teamMonths.reduce((a,m)=>{
+      a.setDemos += num(m.setDemos);
+      a.heldDemos += num(m.heldDemos);
+      a.mrr += num(m.mrr);
+      a.calls += num(m.calls);
+      a.emails += num(m.emails);
+      return a;
+    },{setDemos:0,heldDemos:0,mrr:0,calls:0,emails:0});
+
+    updateKpis(totals, true);
+
+    ['heldDemos','mrr','setDemos','calls','emails'].forEach(metric=>{
+      const el = document.querySelector(`[data-ytd-team="true"][data-ytd-metric="${metric}"]`);
+      if(!el) return;
+      const target = ytdTargetForMetric(metric, year, true);
+      const label = metric === 'heldDemos' ? 'Held Demos' : metric === 'mrr' ? 'MRR' : metric === 'setDemos' ? 'Set Demos' : metric === 'calls' ? 'Calls' : 'Emails';
+      el.innerHTML = ytdCellInner(metric, totals[metric], target, year, label);
+      el.className = target ? (num(totals[metric]) >= num(target) ? 'hit' : 'miss') : '';
+      el.style.fontWeight = '800';
+      el.style.background = 'rgba(96,165,250,.05)';
+    });
+    return;
+  }
+
+  const rep = isTeamView ? null : (app.reps[activeRep] || app.reps[0]);
+  const monthData = isTeamView ? monthlyTeamData(year) : monthlyRepData(rep, year);
+  const totals = monthData.reduce((a,m)=>{
+    a.setDemos += num(m.setDemos);
+    a.heldDemos += num(m.heldDemos);
+    a.mrr += num(m.mrr);
+    a.calls += num(m.calls);
+    a.emails += num(m.emails);
+    return a;
+  },{setDemos:0,heldDemos:0,mrr:0,calls:0,emails:0});
+
+  updateKpis(totals, isTeamView);
+
+  ['heldDemos','mrr','setDemos','calls','emails'].forEach(metric=>{
+    const el = document.querySelector(`[data-ytd-standard="${metric}"]`);
+    if(!el) return;
+    const target = ytdTargetForMetric(metric, year, isTeamView);
+    const label = metric === 'heldDemos' ? 'Held Demos' : metric === 'mrr' ? 'MRR' : metric === 'setDemos' ? 'Set Demos' : metric === 'calls' ? 'Calls' : 'Emails';
+    el.innerHTML = ytdCellInner(metric, totals[metric], target, year, label);
+    el.className = target ? (num(totals[metric]) >= num(target) ? 'hit' : 'miss') : '';
+    el.style.fontWeight = '800';
+    el.style.background = 'rgba(96,165,250,.05)';
+  });
+}
+
+
+
+function renderMonthlyReport(){
+  const isTeamView = String(activeRep) === 'team';
+  const isAllRepsView = String(activeRep) === 'allreps';
+  const rep = (isTeamView || isAllRepsView) ? null : (app.reps[activeRep] || app.reps[0]);
+  const latest = rep ? (rep.weeks[rep.weeks.length-1] || {}) : {weekOf: weekLabel()};
+  const yearSource = app.reps.flatMap(r=>r.weeks.map(w=>yearKey(w.weekOf)));
+  const years = Array.from(new Set(yearSource.concat([yearKey(weekLabel()),'2025']))).sort().reverse();
+  if(!monthlyReportYear || !years.includes(monthlyReportYear)) monthlyReportYear = years[0];
+
+  const months = (isTeamView || isAllRepsView) ? monthlyTeamData(monthlyReportYear) : monthlyRepData(rep, monthlyReportYear);
+
+  const totals = months.reduce((a,m)=>{
+    a.setDemos += num(m.setDemos);
+    a.heldDemos += num(m.heldDemos);
+    a.mrr += num(m.mrr);
+    a.calls += num(m.calls);
+    a.emails += num(m.emails);
+    return a;
+  },{setDemos:0,heldDemos:0,mrr:0,calls:0,emails:0});
+
+  const current = monthKey(latest.weekOf || weekLabel());
+  const teamMultiplier = (isTeamView || isAllRepsView) ? app.reps.length : 1;
+  const hitClass = (value,target) => String(value ?? '').trim()==='' ? 'neutral' : num(value) >= num(target) ? 'hit' : 'miss';
+
+  const ytdHeldTarget = ytdTargetForMetric('heldDemos', monthlyReportYear, isTeamView || isAllRepsView);
+  const ytdMrrTarget = ytdTargetForMetric('mrr', monthlyReportYear, isTeamView || isAllRepsView);
+  const ytdCallsTarget = ytdTargetForMetric('calls', monthlyReportYear, isTeamView || isAllRepsView);
+  const ytdEmailsTarget = ytdTargetForMetric('emails', monthlyReportYear, isTeamView || isAllRepsView);
+
+  function metricYtdCell(metric, total, target, label, attr=''){
+    const cls = target ? (num(total) >= num(target) ? 'hit' : 'miss') : '';
+    return `<td ${attr} class="${cls}" style="font-weight:800;background:rgba(96,165,250,.05)">
+      ${ytdCellInner(metric,total,target,monthlyReportYear,label)}
+    </td>`;
+  }
+
+  function editableOrReadonlyCell(m, metric, target){
+    const val = m[metric];
+    const cls = `${m.month===current?'current':''} ${target ? hitClass(val,target) : ''}`;
+    if(isTeamView || isAllRepsView){
+      const display = metric === 'mrr' && String(val ?? '').trim() !== '' ? fmtMoney(val) : (val || '');
+      return `<td class="${cls}">${display}</td>`;
+    }
+    const safeVal = metric === 'mrr' ? String(val ?? '').replace(/[$,]/g,'') : (val ?? '');
+    return `<td class="${cls}">
+      <input style="text-align:center;padding:7px;font-size:13px" value="${escapeAttr(safeVal)}"
+        oninput="setMonthlyOverride('${rep.id}','${m.month}','${metric}',this.value)">
+    </td>`;
+  }
+
+  function renderStandardMonthlyTable(){
+    const metricTargets = {
+      heldDemos: ytdHeldTarget,
+      mrr: ytdMrrTarget,
+      setDemos: 0,
+      calls: ytdCallsTarget,
+      emails: ytdEmailsTarget
+    };
+
+    const monthlyTargets = {
+      heldDemos: num(app.demoTarget)*teamMultiplier,
+      mrr: num(app.mrrTarget)*teamMultiplier,
+      setDemos: null,
+      calls: null,
+      emails: null
+    };
+
+    const metrics = filteredMonthlyMetrics();
+
+    return `<div class="table-wrap">
+      <table class="month-matrix">
+        <thead>
+          <tr>
+            <th class="row-label"></th>
+            ${months.map(m=>`<th class="${m.month===current?'current':''}">${monthName(m.month)}</th>`).join('')}
+            <th style="background:rgba(96,165,250,.08)">YTD</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${metrics.map(metric=>`
+            <tr>
+              <td class="row-label">${metric.label}</td>
+              ${months.map(m=>editableOrReadonlyCell(m,metric.key,monthlyTargets[metric.key])).join('')}
+              ${metricYtdCell(metric.key,totals[metric.key],metricTargets[metric.key],metric.label,`data-ytd-standard="${metric.key}"`)}
+            </tr>
+          `).join('')}
+        </tbody>
+      </table>
+    </div>`;
+  }
+
+  function renderAllRepsTable(){
+    const metrics = filteredMonthlyMetrics();
+
+    function allRepsEditableCell(rep, month, metric, value, cls=''){
+      const safeVal = metric.key === 'mrr' ? String(value ?? '').replace(/[$,]/g,'') : String(value ?? '');
+      return `<td class="${cls}" style="padding:2px">
+        <input style="text-align:center;padding:5px 4px;font-size:12px;width:70px;min-width:0;border-radius:8px" 
+          value="${escapeAttr(safeVal)}" 
+          oninput="setMonthlyOverride('${rep.id}','${month}','${metric.key}',this.value)">
+      </td>`;
+    }
+
+    return metrics.map(metric=>{
+      const teamTotals = monthNames.map((_,i)=>{
+        const month = monthlyReportYear + '-' + String(i+1).padStart(2,'0');
+        return app.reps.reduce((sum,rep)=>{
+          const repMonths = monthlyRepData(rep, monthlyReportYear);
+          const row = repMonths.find(m=>m.month===month) || {};
+          return sum + num(row[metric.key]);
+        },0);
+      });
+
+      const ytdTarget = ytdTargetForMetric(metric.key, monthlyReportYear, true);
+
+      return `<div style="margin-bottom:24px">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap">
+          <h3 style="margin:0">${metric.label}</h3>
+          ${metric.isQuota ? `<span class="status blue">Quota: ${metric.key==='mrr'?fmtMoney(metric.quota):metric.quota} / rep / mo</span>` : ''}
+        </div>
+        <div class="table-wrap">
+          <table class="month-matrix">
+            <thead>
+              <tr>
+                <th class="row-label">Rep</th>
+                ${monthNames.map((mn,i)=>{
+                  const month = monthlyReportYear+'-'+String(i+1).padStart(2,'0');
+                  return `<th class="${month===current?'current':''}">${mn}</th>`;
+                }).join('')}
+                <th style="background:rgba(96,165,250,.08)">YTD</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${app.reps.map(r=>{
+                const repMonths = monthlyRepData(r, monthlyReportYear);
+                const ytd = repMonths.reduce((s,m)=>s+num(m[metric.key]),0);
+                const repYtdTarget = ytdTargetForMetric(metric.key, monthlyReportYear, false);
+                return `<tr>
+                  <td class="row-label">${escapeHtml(r.name)}</td>
+                  ${repMonths.map(m=>{
+                    const val = num(m[metric.key]);
+                    const cls = metric.isQuota ? (String(m[metric.key]??'').trim()==='' ? 'neutral' : val>=metric.quota?'hit':'miss') : '';
+                    const monthCls = m.month===current?'current':'';
+                    return allRepsEditableCell(r, m.month, metric, m[metric.key], `${monthCls} ${cls}`);
+                  }).join('')}
+                  ${metricYtdCell(metric.key,ytd,repYtdTarget,metric.label,`data-ytd-rep="${r.id}" data-ytd-metric="${metric.key}"`)}
+                </tr>`;
+              }).join('')}
+              <tr style="background:rgba(255,255,255,.035);font-weight:800">
+                <td class="row-label" style="color:#bfdbfe">Team Total</td>
+                ${teamTotals.map((val,i)=>{
+                  const month = monthlyReportYear+'-'+String(i+1).padStart(2,'0');
+                  const cls = metric.isQuota ? (val>0&&val>=metric.quota*app.reps.length?'hit':val>0?'miss':'neutral') : '';
+                  const monthCls = month===current?'current':'';
+                  const display = metric.key==='mrr' ? (val?fmtMoney(val):'') : (val || '');
+                  return `<td class="${monthCls} ${cls}" style="font-weight:800">${display}</td>`;
+                }).join('')}
+                ${metricYtdCell(metric.key,teamTotals.reduce((a,b)=>a+b,0),ytdTarget,metric.label,`data-ytd-team="true" data-ytd-metric="${metric.key}"`)}
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  return `<div class="card">
+    <div class="row">
+      <div>
+        <h2>Monthly Report</h2>
+        <p>Track monthly performance by rep, month, and metric. YTD pace is cumulative through the current month.</p>
+      </div>
+      <span class="status blue">${monthlyReportYear}</span>
+    </div>
+
+    <div class="report-controls">
+      <div class="field">
+        <label class="label">View</label>
+        <select onchange="activeRep=this.value==='team'?'team':this.value==='allreps'?'allreps':Number(this.value);render()">
+          <option value="allreps" ${isAllRepsView?'selected':''}>⭐ All Reps — Full Team View</option>
+          <option value="team" ${isTeamView?'selected':''}>Team Totals</option>
+          <option disabled>── Individual Reps ──</option>
+          ${app.reps.map((r,i)=>`<option value="${i}" ${!isTeamView&&!isAllRepsView&&i===activeRep?'selected':''}>${escapeHtml(r.name)}</option>`).join('')}
+        </select>
+      </div>
+      <div class="field">
+        <label class="label">Year</label>
+        <select onchange="monthlyReportYear=this.value;render()">
+          ${years.map(y=>`<option value="${y}" ${y===monthlyReportYear?'selected':''}>${y}</option>`).join('')}
+        </select>
+      </div>
+      <div class="field">
+        <label class="label">Category / Metric Filter</label>
+        <select onchange="monthlyMetricFilter=this.value;render()">
+          <option value="all" ${monthlyMetricFilter==='all'?'selected':''}>All Metrics</option>
+          <option value="Results" ${monthlyMetricFilter==='Results'?'selected':''}>Results</option>
+          <option value="Revenue" ${monthlyMetricFilter==='Revenue'?'selected':''}>Revenue</option>
+          <option value="Activity" ${monthlyMetricFilter==='Activity'?'selected':''}>Activity</option>
+          <option value="heldDemos" ${monthlyMetricFilter==='heldDemos'?'selected':''}>Held Demos Only</option>
+          <option value="mrr" ${monthlyMetricFilter==='mrr'?'selected':''}>MRR Only</option>
+          <option value="setDemos" ${monthlyMetricFilter==='setDemos'?'selected':''}>Set Demos Only</option>
+          <option value="calls" ${monthlyMetricFilter==='calls'?'selected':''}>Calls Only</option>
+          <option value="emails" ${monthlyMetricFilter==='emails'?'selected':''}>Emails Only</option>
+        </select>
+      </div>
+      <span class="filter-pill">Filter: ${monthlyMetricFilter === 'all' ? 'All Metrics' : monthlyMetricFilter}</span>
+    </div>
+
+    <div class="grid grid4" style="margin-top:14px">
+      <div class="card kpi"><div class="label">Held Demos YTD</div><div class="value" data-ytd-held>${totals.heldDemos}</div><div class="sub">Pace ${ytdHeldTarget}</div></div>
+      <div class="card kpi"><div class="label">Set Demos YTD</div><div class="value" data-ytd-set>${totals.setDemos}</div><div class="sub">Editable monthly totals</div></div>
+      <div class="card kpi"><div class="label">MRR YTD</div><div class="value" data-ytd-mrr>${fmtMoney(totals.mrr)}</div><div class="sub">Pace ${fmtMoney(ytdMrrTarget)}</div></div>
+      <div class="card kpi"><div class="label">Activity YTD</div><div class="value" data-ytd-activity>${totals.calls.toLocaleString()}</div><div class="sub" data-ytd-emails>${totals.emails.toLocaleString()} emails</div></div>
+    </div>
+
+    ${isAllRepsView ? renderAllRepsTable() : renderStandardMonthlyTable()}
+  </div>`;
+}
+
+
+function safeProductMixMetricLabel(metric){
+  if(metric === 'productHeld') return 'Demos Held';
+  if(metric === 'productClosed') return 'Closed Deals';
+  return 'Demos Set';
+}
+
+function safeProductMixSelectedReps(){
+  if(productMixRep === 'allreps') return app.reps;
+  const idx = Number(productMixRep);
+  return [app.reps[idx] || app.reps[0]].filter(Boolean);
+}
+
+function safeProductMixAvailableYears(){
+  const reps = safeProductMixSelectedReps();
+  const years = reps.flatMap(r=>(r.weeks||[]).map(w=>yearKey(w.weekOf))).concat([yearKey(weekLabel()),'2025']);
+  return Array.from(new Set(years)).sort((a,b)=>Number(b)-Number(a));
+}
+
+function safeProductMixMonthTotals(reps, year, month, category){
+  const totals = {};
+  app.products.forEach(p=>totals[p]=0);
+  reps.forEach(rep=>{
+    (rep.weeks||[])
+      .filter(w=>yearKey(w.weekOf)===year && (!month || monthKey(w.weekOf)===month))
+      .forEach(w=>{
+        app.products.forEach(p=>{
+          totals[p] += num((w[category] || {})[p]);
+        });
+      });
+  });
+  return totals;
+}
+
+function safeProductMixTrendData(reps, year, category){
+  const data = {};
+  app.products.forEach(p=>{
+    data[p] = monthNames.map((_,i)=>{
+      const key = year + '-' + String(i+1).padStart(2,'0');
+      return reps.reduce((sum,rep)=>{
+        return sum + (rep.weeks||[])
+          .filter(w=>monthKey(w.weekOf)===key)
+          .reduce((inner,w)=>inner+num((w[category]||{})[p]),0);
+      },0);
+    });
+  });
+  return data;
+}
+
+function safeRenderProductMixTrend(reps, year, category){
+  const data = safeProductMixTrendData(reps, year, category);
+  const allVals = Object.values(data).flat();
+  const max = Math.max(1, ...allVals);
+  return `<div class="card">
+    <div class="row" style="align-items:flex-start;flex-wrap:wrap">
+      <div>
+        <h2>Product Trend Graph</h2>
+        <p>${safeProductMixMetricLabel(category)} by month. Green = up vs prior month, red = down.</p>
+      </div>
+      <span class="status blue">${safeProductMixMetricLabel(category)}</span>
+    </div>
+    <div class="small" style="margin-top:8px">Months: ${monthNames.join(' · ')}</div>
+    <div class="pm-chart">
+      ${app.products.map(p=>{
+        const vals = data[p] || [];
+        const lastIndex = vals.map(v=>v>0).lastIndexOf(true);
+        const last = lastIndex >= 0 ? vals[lastIndex] : 0;
+        const prev = lastIndex > 0 ? vals.slice(0,lastIndex).reverse().find(v=>v>0) || 0 : 0;
+        const diff = last - prev;
+        const cls = diff > 0 ? 'up' : diff < 0 ? 'down' : 'flat';
+        const sign = diff > 0 ? '+' : '';
+        return `<div class="pm-row">
+          <div><b>${escapeHtml(p)}</b></div>
+          <div class="pm-bars">
+            ${vals.map((v,i)=>{
+              const prior = i>0 ? vals[i-1] : v;
+              const barCls = v > prior ? 'up' : v < prior ? 'down' : 'flat';
+              const h = Math.max(3, Math.round((v/max)*44));
+              return `<div class="pm-bar ${barCls}" style="height:${h}px" title="${monthNames[i]}: ${v}"></div>`;
+            }).join('')}
+          </div>
+          <div class="pm-change ${cls}">${sign}${diff}</div>
+        </div>`;
+      }).join('')}
+    </div>
+  </div>`;
+}
+
+
+function renderProducts(){
+  try{
+    const years = safeProductMixAvailableYears();
+    if(!productMixYear || !years.includes(productMixYear)) productMixYear = years[0] || yearKey(weekLabel());
+    const monthOptions = monthNames.map((_,i)=>productMixYear + '-' + String(i+1).padStart(2,'0'));
+    if(!productMixMonth || !monthOptions.includes(productMixMonth)) productMixMonth = monthKey(weekLabel());
+    if(!monthOptions.includes(productMixMonth)) productMixMonth = monthOptions[0];
+    const selectedReps = safeProductMixSelectedReps();
+    const totals = safeProductMixMonthTotals(selectedReps, productMixYear, productMixMonth, productMixCategory);
+    const grandTotal = Object.values(totals).reduce((a,b)=>a+b,0);
+    return `<div style="display:grid;gap:16px">
+      <div class="card">
+        <div class="row" style="align-items:flex-end;flex-wrap:wrap">
+          <div><h2>Product Mix</h2><p>Analyze product mix by all reps or individual rep, year, month, and category.</p></div>
+          <div class="report-controls">
+            <div class="field"><label class="label">Rep View</label><select onchange="productMixRep=this.value;productMixYear=null;productMixMonth=null;render()">
+              <option value="allreps" ${productMixRep==='allreps'?'selected':''}>⭐ All Reps</option>
+              <option disabled>── Individual Reps ──</option>
+              ${app.reps.map((r,i)=>`<option value="${i}" ${String(productMixRep)===String(i)?'selected':''}>${escapeHtml(r.name)}</option>`).join('')}
+            </select></div>
+            <div class="field"><label class="label">Year</label><select onchange="productMixYear=this.value;productMixMonth=null;render()">
+              ${years.map(y=>`<option value="${y}" ${y===productMixYear?'selected':''}>${y}</option>`).join('')}
+            </select></div>
+            <div class="field"><label class="label">Month</label><select onchange="productMixMonth=this.value;render()">
+              ${monthOptions.map(m=>`<option value="${m}" ${m===productMixMonth?'selected':''}>${monthName(m)}</option>`).join('')}
+            </select></div>
+            <div class="field"><label class="label">Category</label><select onchange="productMixCategory=this.value;render()">
+              <option value="productSet" ${productMixCategory==='productSet'?'selected':''}>Demos Set</option>
+              <option value="productHeld" ${productMixCategory==='productHeld'?'selected':''}>Demos Held</option>
+              <option value="productClosed" ${productMixCategory==='productClosed'?'selected':''}>Closed Deals</option>
+            </select></div>
+          </div>
+        </div>
+      </div>
+      ${safeRenderProductMixTrend(selectedReps, productMixYear, productMixCategory)}
+      <div class="card">
+        <div><h2>${safeProductMixMetricLabel(productMixCategory)} Summary</h2><p>${productMixRep==='allreps'?'All Reps':escapeHtml(selectedReps[0]?.name || '')} • ${monthName(productMixMonth)} ${productMixYear} • ${grandTotal} total</p></div>
+        <div class="grid grid3" style="margin-top:14px">
+          ${app.products.map(p=>{
+            const val = totals[p] || 0;
+            const pct = grandTotal ? Math.round((val/grandTotal)*100) : 0;
+            return `<div class="metric-tile"><span class="small">${escapeHtml(p)}</span><b>${pct}%</b><div class="small">${val} total</div></div>`;
+          }).join('')}
+        </div>
+      </div>
+    </div>`;
+  }catch(err){
+    console.error(err);
+    return `<div class="card"><h2>Product Mix Error</h2><p>${escapeHtml(err.message)}</p></div>`;
+  }
+}
+
+
+function renderNotes(){
+  try{
+    const selected = notesRepFilter === 'allreps' ? app.reps : [app.reps[Number(notesRepFilter)] || app.reps[0]].filter(Boolean);
+    const notes = selected.flatMap(rep => (rep.weeks || []).map(w => ({rep,w}))).sort((a,b)=>String(b.w.weekOf).localeCompare(String(a.w.weekOf)));
+    return `<div style="display:grid;gap:16px">
+      <div class="card">
+        <div class="row" style="align-items:flex-end;flex-wrap:wrap">
+          <div><h2>1:1 Notes</h2><p>Review rep notes, manager feedback, and action items across weeks.</p></div>
+          <div class="field" style="min-width:240px;margin:0"><label class="label">Rep View</label><select onchange="notesRepFilter=this.value;render()">
+            <option value="allreps" ${notesRepFilter==='allreps'?'selected':''}>⭐ All Reps</option>
+            <option disabled>── Individual Reps ──</option>
+            ${app.reps.map((r,i)=>`<option value="${i}" ${String(notesRepFilter)===String(i)?'selected':''}>${escapeHtml(r.name)}</option>`).join('')}
+          </select></div>
+        </div>
+      </div>
+      ${notes.length ? notes.map(({rep,w})=>{
+        const repIndex = app.reps.findIndex(r=>r.id===rep.id);
+        return `<div class="card">
+          <div class="row" style="align-items:flex-start;flex-wrap:wrap">
+            <div><h3>${escapeHtml(rep.name)} • Week of ${escapeHtml(w.weekOf)}</h3><p>1:1 recap</p></div>
+            <div class="row" style="gap:8px;justify-content:flex-end">
+              <button class="btn" onclick="copyOneOnOneNotes(${repIndex},'${w.id}')">Copy 1:1</button>
+              <button class="btn-primary" onclick="emailOneOnOneNotes(${repIndex},'${w.id}')">Email 1:1</button>
+            </div>
+          </div>
+          <div class="grid grid2" style="margin-top:14px">
+            <div class="section"><div class="section-head"><h3>Rep Notes</h3></div>
+              <p><b>Going well / proud of:</b><br>${escapeHtml(w.goingWell || '')}</p>
+              <p><b>Top priorities:</b><br>${escapeHtml(w.topPriorities || '')}</p>
+              <p><b>Biggest blocker:</b><br>${escapeHtml(w.biggestBlocker || '')}</p>
+              <p><b>Suggestions:</b><br>${escapeHtml(w.suggestions || '')}</p>
+            </div>
+            <div class="section"><div class="section-head"><h3>Manager Notes</h3></div>
+              <p><b>Manager feedback:</b><br>${escapeHtml(w.managerFeedback || '')}</p>
+              <p><b>Action items:</b><br>${escapeHtml(w.actionItems || '')}</p>
+            </div>
+          </div>
+        </div>`;
+      }).join('') : `<div class="card"><p>No notes found yet.</p></div>`}
+    </div>`;
+  }catch(err){
+    console.error(err);
+    return `<div class="card"><h2>1:1 Notes Error</h2><p>${escapeHtml(err.message)}</p></div>`;
+  }
+}
+
+
+function renderSettings(){
+  return `<div>
+    <div class="card">
+      <h2>Targets</h2><p>These control status and monthly quota tracking.</p>
+      <div class="grid grid2" style="margin-top:14px">
+        ${input('Held Demo Quota',app.demoTarget,`app.demoTarget=this.value;persist()`)}
+        ${input('MRR Quota',app.mrrTarget,`app.mrrTarget=this.value;persist()`)}
+        ${input('Weekly Call Target',app.weeklyCallTarget,`app.weeklyCallTarget=this.value;persist()`)}
+        ${input('Weekly Email Target',app.weeklyEmailTarget,`app.weeklyEmailTarget=this.value;persist()`)}
+      </div>
+    </div>
+    <div class="card">
+      <div class="row">
+        <div><h2>Monthly Report Years</h2><p>Control which years appear in the Monthly Report dropdown. This is only availability, not data entry.</p></div>
+        <button class="btn-primary" onclick="addReportYear()">+ Add Year</button>
+      </div>
+      <div style="margin-top:14px">
+        ${reportYears().map(y=>`<div class="row" style="gap:10px;margin-bottom:10px">
+          <div class="metric-tile" style="flex:1"><span class="small">Report Year</span><b>${y}</b></div>
+          <button class="btn-danger" onclick="deleteReportYear('${y}')">Remove</button>
+        </div>`).join('')}
+      </div>
+    </div>
+    <div class="card">
+      <div class="row">
+        <div><h2>Rep Names</h2><p>Rename, add, or delete BDRs.</p></div>
+        <button class="btn-primary" onclick="addRepFromSettings()">+ Add Rep</button>
+      </div>
+      <div style="margin-top:14px">
+        ${app.reps.map((r,i)=>`<div class="row" style="gap:10px;margin-bottom:10px;align-items:flex-end">
+          <div style="flex:1">${input(`Rep ${i+1} Name`,r.name,`app.reps[${i}].name=this.value;persist()`)}</div>
+          <div style="flex:1">${input(`Email`,r.email||'',`app.reps[${i}].email=this.value;persist()`,'email')}</div>
+          <button class="btn-danger" onclick="deleteRepFromSettings(${i})">Delete</button>
+        </div>`).join('')}
+      </div>
+    </div>
+    <div class="card" style="grid-column:1/-1">
+      <div class="row">
+        <div><h2>Products</h2><p>Add, rename, or delete products from product mix tracking.</p></div>
+        <button class="btn-primary" onclick="addProduct()">+ Add Product</button>
+      </div>
+      <div style="margin-top:14px">
+        ${app.products.map((p,i)=>`<div class="row" style="gap:10px;margin-bottom:10px">
+          <div style="flex:1">${input(`Product ${i+1}`,p,`renameProduct(${i},this.value)`)}</div>
+          <button class="btn-danger" onclick="deleteProduct(${i})">Delete</button>
+        </div>`).join('')}
+      </div>
+    </div>
+  </div>`;
+}
+
+function renameProduct(index,value){
+  const old = app.products[index];
+  app.products[index] = value;
+  app.reps.forEach(rep=>rep.weeks.forEach(w=>{
+    if(w.productDemos[value] === undefined) w.productDemos[value] = w.productDemos[old] ?? '';
+    delete w.productDemos[old];
+  }));
+  persist();
+}
+
+function exportData(){
+  const blob = new Blob([JSON.stringify(app,null,2)],{type:'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'bdr-scorecard-backup.json';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function importData(e){
+  const file = e.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    try{
+      app = JSON.parse(reader.result);
+      if(!app.monthlyOverrides) app.monthlyOverrides = {};
+app.reps.forEach(r=>r.weeks.forEach(ensureWeekShape));
+      activeRep = 0;
+      saveAndRender();
+    }catch(err){
+      alert('Could not import that file.');
+    }
+  };
+  reader.readAsText(file);
+}
+
+function resetData(){
+  if(!confirm('Reset all scorecard data? Export a backup first if you need it.')) return;
+  localStorage.removeItem(STORAGE_KEY);
+  app = initialData();
+  activeRep = 0;
+  saveAndRender();
+}
+
+function generateRecapMailto(repIndex, weekId){
+  const rep = app.reps[repIndex];
+  if(!rep) return;
+  const week = rep.weeks.find(w=>w.id===weekId);
+  if(!week) return;
+
+  const to = rep.email || '';
+  const subject = `1:1 Recap — ${escapeHtml(rep.name)} — Week of ${week.weekOf}`;
+
+  const line = (label, val) => val && String(val).trim() ? `${label}:\n${String(val).trim()}\n` : '';
+  const divider = '─'.repeat(48);
+
+  const body = [
+    `Hi ${rep.name},`,
+    ``,
+    `Here's a summary of our 1:1 for the week of ${week.weekOf}.`,
+    ``,
+    divider,
+    `📊 WEEKLY RESULTS`,
+    divider,
+    `Set Demos:   ${num(week.setDemos)}`,
+    `Held Demos:  ${num(week.demosHeld)}`,
+    `MRR:         ${fmtMoney(week.mrr)}`,
+    `Calls:       ${num(week.calls)}`,
+    `Emails:      ${num(week.emails)}`,
+    ``,
+    divider,
+    `💬 REP DISCUSSION`,
+    divider,
+    line(`What's going well / proud of`, week.goingWell),
+    line(`Top 3 priorities this week`, week.topPriorities),
+    line(`Biggest challenge / blocker`, week.biggestBlocker),
+    line(`Suggestions for improvement`, week.suggestions),
+    divider,
+    `📋 MANAGER FEEDBACK`,
+    divider,
+    line(`Coaching feedback`, week.managerFeedback),
+    line(`Agreed action items`, week.actionItems),
+    ``,
+    divider,
+    `Questions? Reply to this email or reach out directly.`,
+    ``,
+  ].join('\n');
+
+  const mailto = `mailto:${encodeURIComponent(to)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  window.location.href = mailto;
+}
+
+function showRecapModal(repIndex, weekId){
+  const rep = app.reps[repIndex];
+  if(!rep) return;
+  if(!rep.email){
+    // Prompt for email if not set
+    const email = prompt(`No email on file for ${rep.name}.\nEnter their email address to send the recap:`,'');
+    if(!email) return;
+    app.reps[repIndex].email = email.trim();
+    persist();
+  }
+  generateRecapMailto(repIndex, weekId);
+}
+
+function render(){
+  const root = document.getElementById('root');
+  if(activeTab==='dashboard') root.innerHTML = renderDashboard();
+  else if(activeTab==='reps') root.innerHTML = renderReps();
+  else if(activeTab==='monthly') root.innerHTML = renderMonthlyReport();
+  else if(activeTab==='products') root.innerHTML = renderProducts();
+  else if(activeTab==='notes') root.innerHTML = renderNotes();
+  else if(activeTab==='history') root.innerHTML = renderHistorical();
+  else root.innerHTML = renderSettings();
+}
+render();
+loadFromCloud();
+</script>
+</body>
+</html>
